@@ -4,31 +4,39 @@ body {
     padding: 0;
     background-color: #f4f4f9;
     color: #333;
+    text-align: center; /* Center all text by default */
 }
+
 header {
-    background-color: #4CAF50;
+    background-color: #0085CA;
     color: white;
     padding: 10px 0;
     text-align: center;
 }
+
 nav {
     display: flex;
     justify-content: center;
     background-color: #333;
 }
+
 nav a {
     color: white;
     padding: 14px 20px;
     text-decoration: none;
     text-align: center;
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
+
 nav a:hover {
-    background-color: #575757;
+    background-color: #00adff; /* Correct hover color */
 }
+
 main {
     padding: 20px;
     text-align: center;
 }
+
 .content {
     max-width: 800px;
     margin: 0 auto;
@@ -36,8 +44,9 @@ main {
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 footer {
-    background-color: #333;
+    background-color: #00adff;
     color: white;
     text-align: center;
     padding: 10px 0;
