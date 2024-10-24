@@ -20,7 +20,7 @@ async function addPrinter(printerData) {
             printer_name,
             branch,
             location,
-            moodel,
+            model,
             features,
             ip_address,
             portrait,
@@ -64,10 +64,10 @@ async function updatePrinter(id, printerData) {
                 ip_address = $6,
                 portrait = $7,
                 landscape = $8,
-                notes = $9,
+                notes = $9
             WHERE
                 id = $10
-            RETURNING #
+            RETURNING *
             `,
             [
                 printer_name,
@@ -92,7 +92,7 @@ async function updatePrinter(id, printerData) {
 // Function to delete a Printer
 async function deletePrinter(id) {
     try {
-        const result = await client.query('DELETE FROM printer_inventory WHERE id = $1 RETURING *', [id]);
+        const result = await client.query('DELETE FROM printer_inventory WHERE id = $1 RETURNING *', [id]);
         return result.rows[0];
     } catch (err) {
         console.error('Error deleting Printer:', err);

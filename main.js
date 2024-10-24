@@ -1,5 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 
+require('./server');
+
 function createWindow() {
     const win = new BrowserWindow({
         width: 800,
@@ -17,7 +19,7 @@ app.whenReady().then(() => {
 });
 
 app.on('window-all-closed', () => {
-    if (ProcessingInstruction.platform !== 'darwin') {
+    if (process.platform !== 'darwin') {
         app.quit();
     }
 });
