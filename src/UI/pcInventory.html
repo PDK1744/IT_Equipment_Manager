@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Inventory</title>
+    <link rel="stylesheet" href="../Styles/styles.css">
+</head>
+<body>
+
+    <header>
+        <h1>PC Inventory</h1>
+    </header>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="printerInventory.html">Printer Inventory</a>
+    </nav>
+
+    <main>
+        <div class="content">
+            <h2>PC Inventory List</h2>
+            <table id="pcTable">
+                <!-- Table headers -->
+                <thead>
+                    <tr>
+                        <th>PC #</th>
+                        <th>Ease #</th>
+                        <th>Model</th>
+                        <th>Asset Tag</th>
+                        <th>Service Tag</th>
+                        <th>Warranty Expiration</th>
+                        <th>Location</th>
+                        <th>Branch</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody id="pc-table-body">
+                    <!-- Rows inserted here by JavaScript-->
+                </tbody>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 TEXAR FCU IT Department</p>
+    </footer>
+
+    <script src="pcInventory.js"></script>
+</body>
+</html>
