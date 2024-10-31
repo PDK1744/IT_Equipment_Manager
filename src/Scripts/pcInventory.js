@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <td data-field="warranty_expiration">${formatDate(pc.warranty_expiration)}</td>
                 <td data-field="location">${pc.location}</td>
                 <td data-field="branch">${pc.branch}</td>
-                <td data-field="notes">${pc.notes}</td>`;
+                <td class="notes" data-field="notes">${pc.notes}</td>`;
                 pcTableBody.appendChild(row);
             });
         };
