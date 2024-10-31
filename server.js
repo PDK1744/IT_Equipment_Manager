@@ -1,11 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const pcInvRepo = require('./src/pcInventoryRepository');
 const printerInvRepo = require('./src/printerInventoryRepository');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(bodyParser.json());
 
 // PC ROUTES

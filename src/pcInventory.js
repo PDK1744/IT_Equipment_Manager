@@ -1,32 +1,46 @@
-async function fetchPCs() {
+document.addEventListener('DOMContentLoaded', async () => {
+    const pcTableBody = document.getElementById('pcTableBody');
+
     try {
-        const response = await fetch('/pcs');
-        const pc = await response.json();
+        // Fetch items from the server
+        const response = await fetch('http://localhost:3000/pcs');
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const pcs = await response.json();
         console.log(pcs);
 
-        // Get the table body element
-        const tableBody = document.getElementById('pc-table-body');
+        // Function to format the date
+        const formatDate = (dateString) => {
+            const date = new Date(dateString);
+            const year = date.getUTCFullYear();
+            const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+            const day = String(date.getUTCDate()).padStart(2, '0');
+            return `${month}/${day}/${year}`;
+        };
 
-        // Clear any exsisting rows
-        tableBody.innerHTML = '';
+        // Function to render PCs in the table
+        const renderPCs = (pcs) => {
+            pcTableBody.innerHTML = ''; // Clear the table body
+            pcs.forEach(pc => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td data-field="pc_number">${pc.pc_number}</td>
+                <td data-field="ease_number">${pc.ease_number}</td>
+                <td data-field="model">${pc.model}</td>
+                <td data-field="asset_tag">${pc.asset_tag}</td>
+                <td data-field="service_tag">${pc.service_tag}</td>
+                <td data-field="warranty_expiration">${formatDate(pc.warranty_expiration)}</td>
+                <td data-field="location">${pc.location}</td>
+                <td data-field="branch">${pc.branch}</td>
+                <td data-field="notes">${pc.notes}</td>`;
+                pcTableBody.appendChild(row);
+            });
+        };
 
-        // Iterate over the PCs and create table rows
-        pcs.forEach(pc => {
-            const row = document.createElement('tr');
-
-            // Iterate over each key-value pair in the PC object
-            for (const key in pc) {
-                if (pc.hasOwnProperty(key)) {
-                    const cell = docuemnt.createElement('td');
-                    cell.textContent = pc[key];
-                    row.appendChild(cell);
-                }
-            }
-
-            // Append the row to the table body
-            tableBody.appendChild(row);
-        });
-    } catch (err) {
-        console.error('Error fetching PCs:', err);
+        renderPCs(pcs);
+    } catch (error) {
+        console.error('Failed to fetch PCs:', error);
+        pcTableBody.innerHTML = '<tr><td colspan="9">Failed to load data</td></tr>';
     }
-}
+});
