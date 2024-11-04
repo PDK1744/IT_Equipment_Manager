@@ -43,4 +43,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Failed to fetch PCs:', error);
         pcTableBody.innerHTML = '<tr><td colspan="9">Failed to load data</td></tr>';
     }
+    
+    // Search functionality
+    const searchInput = document.getElementById('search');
+    searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.ariaValueMax.toLowerCase();
+        const filteredItems = item.filter(item =>
+            item.name.toLowerCase().includes(searchTerm)
+        );
+        renderPCs(filteredItems);
+    });
 });
