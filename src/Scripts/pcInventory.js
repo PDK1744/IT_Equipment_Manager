@@ -15,7 +15,7 @@ const formatDate = (dateString) => {
 
 function renderPCs(pcs) {
     const pcTableBody = document.getElementById('pcTableBody');
-    pcTableBody.innerHTML = '';
+    pcTableBody.innerHTML = ''; // Clear exsisting rows
     pcs.forEach(pc => {
         const row = document.createElement('tr');
         row.setAttribute('data-id', pc.id);
@@ -36,6 +36,9 @@ function renderPCs(pcs) {
             cell.textContent = col.value;
             row.appendChild(cell);
         });
+
+        
+
         pcTableBody.appendChild(row);
     });
 }
@@ -104,8 +107,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return input ? input.value : cell.textContent; // Get value if input exists, otherwise textContent. This fixed the cells going blank issue when cancelling out of edit on a row.
             });
             document.getElementById('actionButtons').style.display = 'block';
-            saveBtn.style.display = 'inline-block';
+            saveBtn.style.display = 'none';
             cancelBtn.style.display = 'inline-block';
+            editBtn.style.display = 'inline-block';
+            deleteBtn.style.display = 'inline-block';
         }
     });
 
@@ -127,7 +132,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // Save button
+   
     // Save button
     saveBtn.addEventListener('click', async function() {
         if (selectedRow && editMode) {
@@ -184,9 +189,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                 try {
                     const response = await fetch(`http://localhost:3000/pcs/${rowId}`, { method: 'DELETE' });
                     if (response.ok) {
-                        selectedRow.remove();
+                        // Remove row from the pcs array
+                        pcs = pcs.filter(pc => pc.id !== parseInt(rowId));
+
+                        // Re-render the table
+                        renderPCs(pcs);
+
+                        // Reset State
                         selectedRow = null;
                         originalData = [];
+                        document.getElementById('actionbuttons').style.display = 'none';
+                    
 
                         if (pcs.length > 0) {
                             const firstRow = document.querySelector('tr');
