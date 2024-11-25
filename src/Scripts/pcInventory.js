@@ -1,74 +1,3 @@
-// Global variables
-let pcs = [];
-let selectedRow = null;
-let editMode = false;
-let originalData = [];
-
-// Utility Functions
-const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getUTCFullYear();
-    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(date.getUTCDate()).padStart(2, '0');
-    return `${month}/${day}/${year}`;
-};
-
-function renderPCs(pcs) {
-    const pcTableBody = document.getElementById('pcTableBody');
-    pcTableBody.innerHTML = ''; // Clear exsisting rows
-    pcs.forEach(pc => {
-        const row = document.createElement('tr');
-        row.setAttribute('data-id', pc.id);
-        const columns = [
-            { key: 'pc_number', value: pc.pc_number },
-            { key: 'ease_number', value: pc.ease_number },
-            { key: 'model', value: pc.model },
-            { key: 'asset_tag', value: pc.asset_tag },
-            { key: 'service_tag', value: pc.service_tag },
-            { key: 'warranty_expiration', value: formatDate(pc.warranty_expiration) },
-            { key: 'location', value: pc.location },
-            { key: 'branch', value: pc.branch },
-            { key: 'notes', value: pc.notes }
-        ];
-        columns.forEach(col => {
-            const cell = document.createElement('td');
-            cell.setAttribute('data-column', col.key);
-            cell.textContent = col.value;
-            row.appendChild(cell);
-        });
-
-        
-
-        pcTableBody.appendChild(row);
-    });
-}
-
-async function refreshTable() {
-    try {
-        const response = await fetch('http://localhost:3000/pcs');
-        pcs = await response.json();
-        renderPCs(pcs);
-    } catch (error) {
-        console.error('Error refreshing table:', error);
-    }
-}
-
-// Edit Functions (edit, save, cancel, delete, exitEditMode)
-function exitEditMode() {
-    if (selectedRow && editMode) {
-        editMode = false;
-        const cells = selectedRow.getElementsByTagName('td');
-        Array.from(cells).forEach((cell, index) => {
-            cell.textContent = originalData[index];
-        });
-        selectedRow.classList.remove('highlight');
-        selectedRow = null;
-        originalData = [];
-        document.getElementById('actionButtons').style.display = 'none';
-    }
-}
-
-// Event Listener Setup on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', async () => {
     const pcTableBody = document.getElementById('pcTableBody');
     const searchInput = document.getElementById('searchInput');
@@ -77,112 +6,153 @@ document.addEventListener('DOMContentLoaded', async () => {
     const cancelBtn = document.getElementById('cancelBtn');
     const deleteBtn = document.getElementById('deleteBtn');
 
+    let pcs = [];
+    let selectedRow = null;
+    let originalData = [];
+    let editMode = false;
+
     // Fetch initial data
     await refreshTable();
 
-    // Search functionality
-    searchInput.addEventListener('input', () => {
-        const searchTerm = searchInput.value.toLowerCase();
+    // Format the date for display
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString();
+    }
+
+    // Handle search input
+    function handleSearchInput(event) {
+        const searchTerm = event.target.value.toLowerCase();
         const filteredPCs = pcs.filter(pc =>
             Object.values(pc).some(value =>
                 value.toString().toLowerCase().includes(searchTerm)
             )
         );
         renderPCs(filteredPCs);
-    });
+    }
 
-    // Click row event
-    pcTableBody.addEventListener('click', function(event) {
-        const row = event.target.closest('tr');
-        if (row && row.tagName === 'TR') {
-            if (selectedRow && row !== selectedRow) {
-                exitEditMode();
-                selectedRow.classList.remove('highlight');
-            }
-            selectedRow = row;
-            selectedRow.classList.add('highlight');
+    // Render PCs in the table
+    function renderPCs(pcs) {
+        pcTableBody.innerHTML = ''; // Clear existing rows
+        pcs.forEach(pc => {
+            const row = document.createElement('tr');
+            row.setAttribute('data-id', pc.id);
 
-            originalData = Array.from(selectedRow.children).map(cell => {
-                const input = cell.querySelector('input');
-                return input ? input.value : cell.textContent; // Get value if input exists, otherwise textContent. This fixed the cells going blank issue when cancelling out of edit on a row.
+            const columns = [
+                { key: 'pc_number', value: pc.pc_number },
+                { key: 'ease_number', value: pc.ease_number },
+                { key: 'model', value: pc.model },
+                { key: 'asset_tag', value: pc.asset_tag },
+                { key: 'service_tag', value: pc.service_tag },
+                { key: 'warranty_expiration', value: formatDate(pc.warranty_expiration) },
+                { key: 'location', value: pc.location },
+                { key: 'branch', value: pc.branch },
+                { key: 'notes', value: pc.notes }
+            ];
+
+            columns.forEach(col => {
+                const cell = document.createElement('td');
+                cell.setAttribute('data-column', col.key);
+                cell.textContent = col.value;
+                row.appendChild(cell);
             });
-            document.getElementById('actionButtons').style.display = 'block';
-            saveBtn.style.display = 'none';
-            cancelBtn.style.display = 'inline-block';
-            editBtn.style.display = 'inline-block';
-            deleteBtn.style.display = 'inline-block';
-        }
-    });
 
-    // Edit button
-    editBtn.addEventListener('click', function() {
-        if (selectedRow) {
-            editMode = true;
-            saveBtn.style.display = 'inline-block';
-            cancelBtn.style.display = 'inline-block';
+            // Add click event listener to each row
+            row.addEventListener('click', function () {
+                handleRowClick(row);
+            });
+
+            pcTableBody.appendChild(row);
+        });
+
+        // Ensure the search input is still focused after re-render
+        searchInput.focus();
+    }
+
+    // Handle row click event
+    function handleRowClick(row) {
+        if (selectedRow && row !== selectedRow) {
+            exitEditMode();
+            selectedRow.classList.remove('highlight');
+        }
+
+        selectedRow = row;
+        selectedRow.classList.add('highlight');
+
+        originalData = Array.from(selectedRow.children).map(cell => {
+            const input = cell.querySelector('input');
+            return input ? input.value : cell.textContent;
+        });
+
+        document.getElementById('actionButtons').style.display = 'block';
+    }
+
+    // Exit edit mode
+    function exitEditMode() {
+        if (selectedRow && editMode) {
+            editMode = false;
             const cells = selectedRow.getElementsByTagName('td');
-            Array.from(cells).forEach(cell => {
-                const currentText = cell.textContent;
-                cell.innerHTML = `<input type="text" value="${currentText}">`;
+            Array.from(cells).forEach((cell, index) => {
+                cell.textContent = originalData[index];
             });
-            const firstInput = selectedRow.querySelector('td input');
-            if (firstInput) {
-                firstInput.focus();
-            }
+            selectedRow.classList.remove('highlight');
+            selectedRow = null;
+            originalData = [];
+            document.getElementById('actionButtons').style.display = 'none';
         }
-    });
+    }
 
-   
-    // Save button
-    saveBtn.addEventListener('click', async function() {
+    // Save changes to the table row
+    saveBtn.addEventListener('click', async function () {
         if (selectedRow && editMode) {
             const updatedData = {
                 id: selectedRow.getAttribute('data-id')
             };
+
+            // Collect new data from inputs inside each table cell
             const cells = selectedRow.getElementsByTagName('td');
             Array.from(cells).forEach((cell) => {
                 const input = cell.querySelector('input');
-                updatedData[cell.getAttribute('data-column')] = input.value;
-                cell.textContent = input.value; // Update cell content immediately
-            });
-        
-        editMode = false;
-        selectedRow.classList.remove('highlight');
-        document.getElementById('actionButtons').style.display = 'none';
-
-        try {
-            const response = await fetch(`http://localhost:3000/pcs/${updatedData.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updatedData),
+                if (input) {
+                    updatedData[cell.getAttribute('data-column')] = input.value;
+                    cell.textContent = input.value; // Update the cell immediately
+                }
             });
 
-            if (response.ok) {
-                // Directly update the row's data without a full refresh
-                Object.keys(updatedData).forEach(key => {
-                    const cell = selectedRow.querySelector(`td[data-column="${key}"]`);
-                    if (cell) {
-                        cell.textContent = updatedData[key];
-                    }
+            // Temporarily update the UI to reflect the changes before calling the API
+            editMode = false;
+            selectedRow.classList.remove('highlight');
+            document.getElementById('actionButtons').style.display = 'none';
+
+            try {
+                // Perform PUT request to update the data on the backend
+                const response = await fetch(`http://localhost:3000/pcs/${updatedData.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedData),
                 });
-            } else {
-                console.error('Failed to save changes');
+
+                if (response.ok) {
+                    pcs = pcs.map(pc =>
+                        pc.id === parseInt(updatedData.id) ? { ...pc, ...updatedData } : pc
+                    );
+                } else {
+                    console.error('Failed to save changes');
+                }
+            } catch (error) {
+                console.error('Error updating row:', error);
             }
-
-        } catch (error) {
-            console.error('Error updating row:', error);
         }
-    }
-});
-
-
-    // Cancel button
-    cancelBtn.addEventListener('click', () => {
-        if (editMode) exitEditMode();
     });
 
-    // Delete button
-    deleteBtn.addEventListener('click', async function() {
+    // Cancel edit mode
+    cancelBtn.addEventListener('click', () => {
+        if (editMode) exitEditMode();
+        selectedRow.classList.remove('highlight');
+    });
+
+    // Delete button functionality
+    deleteBtn.addEventListener('click', async function () {
         if (selectedRow) {
             const rowId = selectedRow.getAttribute('data-id');
             if (confirm('Are you sure you want to delete this row?')) {
@@ -191,25 +161,64 @@ document.addEventListener('DOMContentLoaded', async () => {
                     if (response.ok) {
                         // Remove row from the pcs array
                         pcs = pcs.filter(pc => pc.id !== parseInt(rowId));
-
-                        // Re-render the table
-                        renderPCs(pcs);
+                        selectedRow.remove(); // Remove the row from the DOM
 
                         // Reset State
                         selectedRow = null;
                         originalData = [];
-                        document.getElementById('actionbuttons').style.display = 'none';
-                    
+                        document.getElementById('actionButtons').style.display = 'none';
 
-                        if (pcs.length > 0) {
-                            const firstRow = document.querySelector('tr');
-                            if (firstRow) {
-                                firstRow.click();
-                            }
-                        }
+                        // Rebuild the table after deletion
+                        renderPCs(pcs);
+
+                        // Force focus on the search input after deletion
+                        searchInput.focus();
+
+                        // Ensure that input is properly triggered
+                        setTimeout(() => {
+                            searchInput.setAttribute('value', searchInput.value);
+                            searchInput.dispatchEvent(new Event('input'));
+                        }, 100);
+
+                    } else {
+                        console.error('Failed to delete row');
                     }
-                } catch (error) { console.error('Error deleting row:', error); }
+                } catch (error) {
+                    console.error('Error deleting row:', error);
+                }
             }
+        }
+    });
+
+    // Refresh table from the backend
+    async function refreshTable() {
+        try {
+            const response = await fetch('http://localhost:3000/pcs');
+            pcs = await response.json();
+            renderPCs(pcs);
+        } catch (error) {
+            console.error('Error refreshing table:', error);
+        }
+    }
+
+    // Set up search input listener
+    searchInput.addEventListener('input', handleSearchInput);
+
+    // Handle edit button click
+    editBtn.addEventListener('click', function () {
+        if (selectedRow) {
+            editMode = true;
+            const cells = selectedRow.getElementsByTagName('td');
+            Array.from(cells).forEach((cell, index) => {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = cell.textContent;
+                cell.innerHTML = '';  // Clear the cell
+                cell.appendChild(input);
+            });
+
+            // Hide action buttons until save or cancel
+            document.getElementById('actionButtons').style.display = 'block';
         }
     });
 });
