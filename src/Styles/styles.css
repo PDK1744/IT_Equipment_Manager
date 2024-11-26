@@ -29,7 +29,7 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #00adff; /* Correct hover color */
+    background-color: #00adff; 
 }
 
 main {
@@ -50,7 +50,7 @@ footer {
     color: white;
     text-align: center;
     padding: 10px 0;
-    position: fixed;
+    position: static;
     width: 100%;
     bottom: 0;
 }
@@ -62,6 +62,61 @@ table {
     border-collapse: collapse;
 }
 
+th {
+    cursor: pointer;
+    position: relative;
+    padding-right: 20px;
+    text-align: left;
+    transition: #f2f2f2 0.3s ease;
+}
+
+th .sort-arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: #aaa;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s ease;
+}
+
+th.sorted-asc .sort-arrow:after {
+    content: "▲";
+    opacity: 1;
+}
+
+th.sorted-desc .sort-arrow:after {
+    content: "▼"; /* Descending arrow */
+    opacity: 1;
+}
+
+th:hover {
+    background-color: #f2f2f2;
+}
+
+th . .sort-arrow {
+    position:absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: #aaa;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+th.sorted-asc .sort-arrow:after {
+    content: "▲";
+    opacity: 1;
+}
+
+th.sorted-desc .sort-arrow:after {
+    content: "▼";
+    opacity: 1;
+}
+
+
 .table-container {
     max-height: 500px;
     overflow-y: auto;
@@ -69,6 +124,7 @@ table {
 }
 
 .table-container table thead th {
+    cursor: pointer;
     position: sticky;
     top: 0;
     z-index: 1;
@@ -81,6 +137,7 @@ th, td {
     border: 1px solid #ddd;
     text-align: left;
 }
+
 
 thead {
     background-color: #00adff;
@@ -125,8 +182,43 @@ td.notes {
 }
 
 #actionButtons {
-    display: none;
+    display: none; /* Keep hidden initially */
     margin-bottom: 10px;
+    justify-content: space-around; /* Space out buttons evenly */
+    gap: 10px; /* Add some spacing between buttons */
+    padding: 10px; /* Add padding for better layout */
+    background-color: #f4f4f9; /* Subtle background color for the container */
+    border-radius: 8px; /* Rounded corners for the container */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
+
+#actionButtons button {
+    background-color: #00adff; /* Primary button color */
+    color: #fff; /* White text */
+    border: none; /* Remove default borders */
+    border-radius: 6px; /* Rounded corners for buttons */
+    padding: 8px 16px; /* Button size */
+    font-size: 14px; /* Readable text size */
+    font-weight: bold; /* Bold text for emphasis */
+    cursor: pointer; /* Pointer cursor for interactivity */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth hover effects */
+}
+
+#actionButtons button:hover {
+    background-color: #002c5b; /* Darker blue on hover */
+    transform: scale(1.05); /* Slight zoom effect */
+}
+
+#actionButtons button:active {
+    background-color: #021d38; /* Even darker blue on click */
+    transform: scale(0.95); /* Slight shrink effect */
+}
+
+#actionButtons button:disabled {
+    background-color: #d6d6d6; /* Greyed-out appearance */
+    color: #a1a1a1; /* Lighter text */
+    cursor: not-allowed; /* Disabled cursor */
+}
+
 
 

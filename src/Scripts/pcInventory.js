@@ -5,11 +5,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const saveBtn = document.getElementById('saveBtn');
     const cancelBtn = document.getElementById('cancelBtn');
     const deleteBtn = document.getElementById('deleteBtn');
+    const actionButtons = document.getElementById('actionButtons');
 
     let pcs = [];
     let selectedRow = null;
     let originalData = [];
     let editMode = false;
+    let currentSortColumn = null;
+    let currentSortOrder = 'asc';
 
     // Fetch initial data
     await refreshTable();
@@ -68,6 +71,51 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Ensure the search input is still focused after re-render
         searchInput.focus();
     }
+
+    // Sort by Column Logic
+    document.getElementById('pcTableHeader').addEventListener('click', function (event) {
+        const th = event.target.closest('th');
+        if (!th) return;
+
+        const key = th.getAttribute('data-key');
+        if (!key) return;
+
+        
+
+        // Add sorting class to the clicked header
+
+        if (currentSortColumn === key) {
+            currentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
+        } else {
+            currentSortColumn = key;
+            currentSortOrder = 'asc';
+        }
+
+        // Remove sorting classed from all headers
+        const headers = document.querySelectorAll('th');
+        headers.forEach(header => {
+            header.classList.remove('sorted-asc', 'sorted-desc');
+        })
+
+        // Add appropiate sort class
+        th.classList.add(currentSortOrder === 'asc' ? 'sorted-asc' : 'sorted-desc');
+
+        pcs.sort((a, b) => {
+            const valueA = a[key] || '';
+            const valueB = b[key] || '';
+
+            if (typeof valueA === 'string' && typeof valueB === 'string') {
+                return currentSortOrder === 'asc'
+                ? valueA.localeCompare(valueB)
+                : valueB.localeCompare(valueA);
+            } else if (typeof valueA === 'number' && typeof valueB === 'number') {
+                return currentSortOrder === 'asc' ? valueA - valueB : valueB - valueA;
+            } else {
+                return 0;
+            }
+        });
+        renderPCs(pcs);
+    });
 
     // Handle row click event
     function handleRowClick(row) {
@@ -149,13 +197,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     cancelBtn.addEventListener('click', () => {
         if (editMode) exitEditMode();
         selectedRow.classList.remove('highlight');
+        actionButtons.style.display = 'none';
     });
 
     // Delete button functionality
     deleteBtn.addEventListener('click', async function () {
         if (selectedRow) {
             const rowId = selectedRow.getAttribute('data-id');
-            if (confirm('Are you sure you want to delete this row?')) {
+            const confirmed = await window.electronAPI.showConfirmDialog('Are you sure you want to delete this row?');
+            if (confirmed) {
                 try {
                     const response = await fetch(`http://localhost:3000/pcs/${rowId}`, { method: 'DELETE' });
                     if (response.ok) {
@@ -168,8 +218,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         originalData = [];
                         document.getElementById('actionButtons').style.display = 'none';
 
-                        // Rebuild the table after deletion
-                        renderPCs(pcs);
+                        // Rebuild the table after deletion. DO I NEED THIS??
+                        //renderPCs(pcs);
 
                         // Force focus on the search input after deletion
                         searchInput.focus();
@@ -178,7 +228,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         setTimeout(() => {
                             searchInput.setAttribute('value', searchInput.value);
                             searchInput.dispatchEvent(new Event('input'));
-                        }, 100);
+                        }, 10);
 
                     } else {
                         console.error('Failed to delete row');
