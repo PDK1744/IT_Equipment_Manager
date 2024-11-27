@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const searchTerm = event.target.value.toLowerCase();
         const filteredPCs = pcs.filter(pc =>
             Object.values(pc).some(value =>
-                value.toString().toLowerCase().includes(searchTerm)
+                value && value.toString().trim().toLowerCase().includes(searchTerm)
             )
         );
         renderPCs(filteredPCs);
