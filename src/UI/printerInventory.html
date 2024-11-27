@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PC Inventory</title>
+    <title>Printer Inventory</title>
     <link rel="stylesheet" href="../Styles/styles.css">
 </head>
 <body>
-
+    
     <header>
         <h1>Printer Inventory</h1>
     </header>
@@ -21,19 +21,27 @@
         <div class="content">
             <h2>Printer Inventory List</h2>
             <input type="text" id="searchInput" placeholder="Search Printers..." />
+
+            <div id="actionButtons">
+                <button id="editBtn">Edit</button>
+                <button id="saveBtn">Save</button>
+                <button id="cancelBtn">Cancel</button>
+                <button id="deleteBtn">Delete</button>
+            </div>
+            <div class="table-container">
             <table id="printerTable">
                 <!-- Table headers -->
                 <thead>
-                    <tr>
-                        <th>Printer Name</th>
-                        <th>Branch</th>
-                        <th>Location</th>
-                        <th>Model</th>
-                        <th>Features</th>
-                        <th>IP Address</th>
-                        <th>Portrait</th>
-                        <th>Landscape</th>
-                        <th>Notes</th>
+                    <tr id="printerTableHeader">
+                        <th data-key="printer_name">Printer Name<span class="sort-arrow"></span></th>
+                        <th data-key="branch">Branch<span class="sort-arrow"></span></th>
+                        <th data-key="location">Location<span class="sort-arrow"></span></th>
+                        <th data-key="model">Model<span class="sort-arrow"></span></th>
+                        <th data-key="features">Features<span class="sort-arrow"></span></th>
+                        <th data-key="ip_address">IP Address<span class="sort-arrow"></span></th>
+                        <th data-key="portrait">Portrait<span class="sort-arrow"></span></th>
+                        <th data-key="landscape">Landscape<span class="sort-arrow"></span></th>
+                        <th data-key="notes">Notes <span class="sort-arrow"></span></th>
                     </tr>
                 </thead>
                 <tbody id="printerTableBody">
@@ -42,6 +50,7 @@
                 <tbody>
                 </tbody>
             </table>
+        </div>
         </div>
     </main>
 
