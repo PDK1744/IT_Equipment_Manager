@@ -7,8 +7,14 @@ contextBridge.exposeInMainWorld('electronAPI', {
     openAddPrinter: () => ipcRenderer.send('open-add-printer'),
 
     // To handle form submissions
-    addPc: (pcData) => ipcRenderer.send('add-pc', pcData),
-    addPrinter: (printerData) => ipcRenderer.send('add-printer', printerData),
+    addPc: (pcData) => {
+        console.log("Sending PC data to main:", pcData);
+        ipcRenderer.send('add-pc', pcData);
+    },
+    addPrinter: (printerData) => {
+        console.log('Sending Printer data:', printerData);
+        ipcRenderer.send('add-printer', printerData);
+    },
 
     // To show confirmation dialog for delete
     showConfirmDialog: (message) => ipcRenderer.invoke('show-confirm-dialog', message),

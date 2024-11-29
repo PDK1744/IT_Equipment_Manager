@@ -4,41 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add PC</title>
+    <link rel="stylesheet" href="../Styles/formStyles.css">
 </head>
 <body>
-    <h3>Add a New PC</h3>
-    <form id="pcForm">
-        <label for="pc_number">PC #:</label><br>
-        <input type="text" id="pc_number" name="pc_number"><br><br>
+    <div class="form-container">
+        <h3>Add a New PC</h3>
+        <form id="pcForm">
+            <div class="form-group">
+                <label for="pc_number">PC #:</label>
+                <input type="text" id="pc_number" name="pc_number" required>
+            </div>
 
-        <label for="ease_number">Ease #:</label><br>
-        <input type="text" id="ease_number" name="ease_number"><br><br>
+            <div class="form-group">
+                <label for="ease_number">Ease #:</label>
+                <input type="text" id="ease_number" name="ease_number" required>
+            </div>
 
-        <label for="model">Model:</label><br>
-        <input type="text" id="model" name="model"><br><br>
+            <div class="form-group">
+                <label for="model">Model:</label>
+                <input type="text" id="model" name="model" required>
+            </div>
 
-        <label for="asset_tag">Asset Tag:</label><br>
-        <input type="text" id="asset_tag" name="asset_tag"><br><br>
+            <div class="form-group">
+                <label for="asset_tag">Asset Tag:</label>
+                <input type="text" id="asset_tag" name="asset_tag" required>
+            </div>
 
-        <label for="service_tag">Service Tag:</label><br>
-        <input type="text" id="service_tag" name="service_tag"><br><br>
+            <div class="form-group">
+                <label for="service_tag">Service Tag:</label>
+                <input type="text" id="service_tag" name="service_tag" required>
+            </div>
 
-        <label for="warranty_expiration">Warranty Expiration:</label><br>
-        <input type="date" id="warranty_expiration" name="warranty_expiration"><br><br>
+            <div class="form-group">
+                <label for="warranty_expiration">Warranty Expiration:</label>
+                <input type="date" id="warranty_expiration" name="warranty_expiration" required>
+            </div>
 
-        <label for="location">Location:</label><br>
-        <input type="text" id="location" name="location"><br><br>
+            <div class="form-group">
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location" required>
+            </div>
 
-        <label for="branch">Branch:</label><br>
-        <input type="text" id="branch" name="branch"><br><br>
+            <div class="form-group">
+                <label for="branch">Branch:</label>
+                <input type="text" id="branch" name="branch" required>
+            </div>
 
-        <label for="notes">Notes:</label><br>
-        <input type="text" id="notes" name="notes"><br><br>
+            <div class="form-group">
+                <label for="notes">Notes:</label>
+                <input type="text" id="notes" name="notes">
+            </div>
 
-        <button type="submit">Add PC</button>
-        <button type="button" id="cancelBtn">Cancel</button>
-    </form>
+            <div class="button-container">
+                <button type="submit">Add PC</button>
+                <button type="button" id="cancelBtn">Cancel</button>
+            </div>
+        </form>
+    </div>
 
-    <script src="popupRenderer.js"></script>
+    <script src="../Scripts/popupRenderer.js"></script>
 </body>
 </html>

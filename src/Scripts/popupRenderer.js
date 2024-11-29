@@ -1,5 +1,3 @@
-
-
 document.addEventListener("DOMContentLoaded", () => {
     // Select the forms
     const pcForm = document.getElementById("pcForm");
@@ -7,8 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add event listener for the "Add PC" form
     if (pcForm) {
-        pcForm.addEventListener("submit", (event) => {
+        pcForm.addEventListener("submit", function (event) {
             event.preventDefault(); // Prevent default form submission
+            console.log('Form submitted');
 
             // Collect data from the PC form
             const pcData = {
@@ -25,6 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Send the data to the main process
             window.electronAPI.addPc(pcData);
+
+            // Reset the form and provide feedback
+            pcForm.reset();
+            alert("PC added successfully!");
+            window.close();
         });
 
         // Handle the cancel button for the PC form
@@ -35,8 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add event listener for the "Add Printer" form
     if (printerForm) {
-        printerForm.addEventListener("submit", (event) => {
+        printerForm.addEventListener("submit", function (event) {
             event.preventDefault(); // Prevent default form submission
+
 
             // Collect data from the Printer form
             const printerData = {
@@ -53,6 +58,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Send the data to the main process
             window.electronAPI.addPrinter(printerData);
+
+            // Reset the form and provide feedback
+            printerForm.reset();
+            alert("Printer added successfully!");
+            window.close();
         });
 
         // Handle the cancel button for the Printer form
