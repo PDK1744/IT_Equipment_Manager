@@ -13,7 +13,7 @@ async function getAllPCs() {
 
 // Function to add a new PC
 async function addPC(pcData) {
-    const { pc_number, ease_number, model, asset_tag, service_tag, warranty_expiration, location, branch, notes } = pcData;
+    const { pc_number, ease_number, model, asset_tag, service_tag, warranty_expiration, location, branch, notes, status } = pcData;
     try {
         const result = await client.query(
     `INSERT INTO pc_inventory (
@@ -25,9 +25,10 @@ async function addPC(pcData) {
         warranty_expiration, 
         location, 
         branch, 
-        notes
+        notes,
+        status
     ) VALUES (
-        $1, $2, $3, $4, $5, $6, $7, $8, $9
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
     ) RETURNING *`,
     [
         pc_number, 
@@ -38,7 +39,8 @@ async function addPC(pcData) {
         warranty_expiration, 
         location, 
         branch, 
-        notes
+        notes,
+        status
     ]
 );
         return result.rows[0];
@@ -50,7 +52,7 @@ async function addPC(pcData) {
 
 // Function to update a PC
 async function updatePC(id, pcData) {
-    const { pc_number, ease_number, model, asset_tag, service_tag, warranty_expiration, location, branch, notes } = pcData;
+    const { pc_number, ease_number, model, asset_tag, service_tag, warranty_expiration, location, branch, notes, status } = pcData;
     try {
         const result = await client.query(
             `
@@ -64,9 +66,10 @@ async function updatePC(id, pcData) {
                 warranty_expiration = $6, 
                 location = $7, 
                 branch = $8, 
-                notes = $9 
+                notes = $9,
+                status = $10 
             WHERE 
-                id = $10 
+                id = $11 
             RETURNING *
             `,
             [
@@ -79,6 +82,7 @@ async function updatePC(id, pcData) {
                 location, 
                 branch, 
                 notes,
+                status,
                 id 
             ]
         );

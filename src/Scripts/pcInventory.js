@@ -55,7 +55,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 { key: 'warranty_expiration', value: formatDate(pc.warranty_expiration) },
                 { key: 'location', value: pc.location },
                 { key: 'branch', value: pc.branch },
-                { key: 'notes', value: pc.notes }
+                { key: 'notes', value: pc.notes },
+                { key: 'status', value: pc.status }
             ];
 
             columns.forEach(col => {

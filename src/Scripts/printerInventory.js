@@ -49,7 +49,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 { key: 'ip_address', value: printer.ip_address },
                 { key: 'portrait', value: printer.portrait },
                 { key: 'landscape', value: printer.portrait },
-                { key: 'notes', value: printer.notes }
+                { key: 'notes', value: printer.notes },
+                { key: 'status', value: printer.status }
             ];
 
             columns.forEach(col => {

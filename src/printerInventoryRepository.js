@@ -13,7 +13,7 @@ async function getAllPrinters() {
 
 // Function to add a new Printer
 async function addPrinter(printerData) {
-    const { printer_name, branch, location, model, features, ip_address, portrait, landscape, notes } = printerData;
+    const { printer_name, branch, location, model, features, ip_address, portrait, landscape, notes, status } = printerData;
     try {
         const result = await client.query(
             `INSERT INTO printer_inventory (
@@ -25,9 +25,10 @@ async function addPrinter(printerData) {
             ip_address,
             portrait,
             landscape,
-            notes
+            notes,
+            status
             ) VALUES (
-             $1, $2, $3, $4, $5, $6, $7, $8, $9
+             $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
             ) RETURNING *`,
             [
                 printer_name,
@@ -38,7 +39,8 @@ async function addPrinter(printerData) {
                 ip_address,
                 portrait,
                 landscape,
-                notes
+                notes,
+                status
             ]
         );
         return result.rows[0];
@@ -50,7 +52,7 @@ async function addPrinter(printerData) {
 
 // Function to update a printer
 async function updatePrinter(id, printerData) {
-    const { printer_name, branch, location, model, features, ip_address, portrait, landscape, notes } = printerData;
+    const { printer_name, branch, location, model, features, ip_address, portrait, landscape, notes, status } = printerData;
     try {
         const result = await client.query(
             `
@@ -64,9 +66,10 @@ async function updatePrinter(id, printerData) {
                 ip_address = $6,
                 portrait = $7,
                 landscape = $8,
-                notes = $9
+                notes = $9,
+                status = $10
             WHERE
-                id = $10
+                id = $11
             RETURNING *
             `,
             [
@@ -79,6 +82,7 @@ async function updatePrinter(id, printerData) {
                 portrait,
                 landscape,
                 notes,
+                status,
                 id
             ]
         );
