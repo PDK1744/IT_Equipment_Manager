@@ -17,6 +17,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Fetch initial data
     await refreshTable();
 
+    document.getElementById('addPcBtn').addEventListener('click', () => {
+        window.electronAPI.openAddPc();
+    });
+    
+
     // Format the date for display
     function formatDate(dateString) {
         const date = new Date(dateString);

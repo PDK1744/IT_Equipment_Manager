@@ -17,11 +17,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Fetch initial data
     await refreshTable();
 
-    // Format the date for display
-    function formatDate(dateString) {
-        const date = new Date(dateString);
-        return date.toLocaleDateString();
-    }
+    document.getElementById('addPrinterBtn').addEventListener('click', () => {
+        window.electronAPI.openAddPrinter();
+    });
+
 
     // Handle search input
     function handleSearchInput(event) {
