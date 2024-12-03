@@ -245,6 +245,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             const response = await fetch('http://localhost:3000/printers');
             printers = await response.json();
+
+            // Sort Data
+            printers.sort((a, b) => {
+                if (a.printer_name !== b.printer_name) {
+                    return a.printer_name - b.printer_name;
+                }
+                return a.status.localeCompare(b.status);
+            })
             renderPrinters(printers);
         } catch (error) {
             console.error('Error refreshing table:', error);

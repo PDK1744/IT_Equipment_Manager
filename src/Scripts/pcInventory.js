@@ -251,6 +251,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             const response = await fetch('http://localhost:3000/pcs');
             pcs = await response.json();
+
+            // Sort data by pc_number and status in ascending order
+            pcs.sort((a, b) => {
+                if (a.pc_number !== b.pc_number) {
+                    return a.pc_number - b.pc_number;
+                }
+                return a.status.localeCompare(b.status);
+            });
+            
             renderPCs(pcs);
         } catch (error) {
             console.error('Error refreshing table:', error);
