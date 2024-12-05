@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.electronAPI.openAddPc();
     });
     
+    applyStatusFilter()
 
     // Format the date for display
     function formatDate(dateString) {
@@ -31,11 +32,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Handle search input
     function handleSearchInput(event) {
         const searchTerm = event.target.value.toLowerCase();
-        const filteredPCs = pcs.filter(pc =>
-            Object.values(pc).some(value =>
+        const filteredPCs = pcs.filter(pc => {
+            const { id, ...rest } = pc;
+            return Object.values(rest).some(value =>
                 value && value.toString().trim().toLowerCase().includes(searchTerm)
-            )
-        );
+            );
+    });
         renderPCs(filteredPCs);
     }
 
@@ -155,6 +157,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('actionButtons').style.display = 'none';
         }
     }
+
+    // To apply status filter
+    function applyStatusFilter() {
+        // Get selected status
+        const statusFilter = document.getElementById('statusFilter').value;
+
+        // Filter PCs based on the selected status
+        const filteredPCs = pcs.filter(pc => {
+            return statusFilter === '' || pc.status === statusFilter;
+        });
+
+        renderPCs(filteredPCs);
+    }
+
+    document.getElementById('statusFilter').addEventListener('change', applyStatusFilter);
+
+    document.addEventListener('DOMContentLoaded', () => {
+        applyStatusFilter();
+    });
 
     // Save changes to the table row
     saveBtn.addEventListener('click', async function () {

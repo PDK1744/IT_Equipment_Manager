@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Handle search input
     function handleSearchInput(event) {
         const searchTerm = event.target.value.toLowerCase();
-        const filteredPrinters = printers.filter(printer =>
+        const filteredPrinters = printers.filter(printer => 
             Object.values(printer).some(value =>
                 value && value.toString().trim().toLowerCase().includes(searchTerm)
             )
@@ -149,6 +149,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('actionButtons').style.display = 'none';
         }
     }
+
+    // To apply status filter
+    function applyStatusFilter() {
+        // Get selected status
+        const statusFilter = document.getElementById('statusFilter').value;
+
+        // Filter PCs based on the selected status
+        const filteredPrinters = printers.filter(printer => {
+            return statusFilter === '' || printer.status === statusFilter;
+        });
+
+        renderPrinters(filteredPrinters);
+    }
+
+    document.getElementById('statusFilter').addEventListener('change', applyStatusFilter);
+
+    document.addEventListener('DOMContentLoaded', () => {
+        applyStatusFilter();
+    });
 
     // Save changes to the table row
     saveBtn.addEventListener('click', async function () {

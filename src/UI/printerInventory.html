@@ -21,6 +21,14 @@
         <div class="content">
             <h2>Printer Inventory List</h2>
             <a href="#" id="addPrinterBtn">Add Printer</a>
+            <div class="filter-container">
+                <label for="statusFilter">Filter by Status:</label>
+                <select id="statusFilter">
+                    <option value="A" selected>Active</option>
+                    <option value="D">Inactive</option>
+                    <option value="">All Printers</option>
+                </select>
+            </div>
             <input type="text" id="searchInput" placeholder="Search Printers..." />
 
             <div id="actionButtons">
