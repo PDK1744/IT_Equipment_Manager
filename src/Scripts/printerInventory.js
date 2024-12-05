@@ -290,6 +290,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const input = document.createElement('input');
                 input.type = 'text';
                 input.value = cell.textContent;
+
+                input.style.width = '100%';
+                input.style.boxSizing = 'border-box';
+                input.style.padding = '8px';
+                input.style.border = '1px solid #ccc';
+                input.style.borderRadius = '4px';
+                
                 cell.innerHTML = '';  // Clear the cell
                 cell.appendChild(input);
             });

@@ -50,7 +50,7 @@ footer {
     color: white;
     text-align: center;
     padding: 10px 0;
-    position: static;
+    position: sticky;
     width: 100%;
     bottom: 0;
 }
@@ -187,7 +187,7 @@ td.notes {
     justify-content: space-around; /* Space out buttons evenly */
     gap: 10px; /* Add some spacing between buttons */
     padding: 10px; /* Add padding for better layout */
-    background-color: #f4f4f9; /* Subtle background color for the container */
+    /*background-color: #f4f4f9; /* Subtle background color for the container */
     border-radius: 8px; /* Rounded corners for the container */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
@@ -270,22 +270,22 @@ td.notes {
 
 
 
-/* Dropdown Arrow Styling (Optional) */
+/* Dropdown Arrow Styling */
 #status-filter {
-    background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" fill="%23333" viewBox="0 0 24 24"%3E%3Cpath d="M7 10l5 5 5-5z"/%3E%3C/svg%3E'); /* Add custom arrow */
+    background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" fill="%23333" viewBox="0 0 24 24"%3E%3Cpath d="M7 10l5 5 5-5z"/%3E%3C/svg%3E'); 
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 12px;
 }
 
-/* Optional: Align Dropdown with Content */
+/*Align Dropdown with Content */
 .filter-container {
     display: flex;
     align-items: center;
     gap: 10px; /* Space between label and dropdown */
 }
 
-/* Optional: Style Label */
+/*Style Label */
 .filter-container label {
     font-weight: bold;
     font-size: 14px;
