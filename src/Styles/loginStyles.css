@@ -1,0 +1,106 @@
+/* General styling for the page */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9; /* Light background color */
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container for the login form */
+.login-container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px; /* Limit width for larger screens */
+    text-align: center;
+}
+
+/* Styling for the form title */
+.login-title {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Style for the form and form elements */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Form group for each label/input pair */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Styling for labels */
+.form-label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+/* Styling for input fields */
+.form-input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Focus state for input fields */
+.form-input:focus {
+    border-color: #0056b3;
+    outline: none;
+}
+
+/* Button styling */
+.submit-button {
+    background-color: #00adff;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #002c5b;
+}
+
+/* Error message styling */
+#error-message {
+    display: none;
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 600px) {
+    .login-container {
+        padding: 30px;
+        max-width: 90%;
+    }
+
+    .login-title {
+        font-size: 28px;
+    }
+
+    .submit-button {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+}

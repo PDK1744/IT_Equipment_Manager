@@ -16,6 +16,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
         ipcRenderer.send('add-printer', printerData);
     },
 
+    loginSuccess: () => ipcRenderer.send('login-success'),
+    
+
     // To show confirmation dialog for delete
     showConfirmDialog: (message) => ipcRenderer.invoke('show-confirm-dialog', message),
 });

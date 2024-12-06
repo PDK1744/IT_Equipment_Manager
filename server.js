@@ -1,14 +1,86 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const db = require('./src/db');
 const pcInvRepo = require('./src/pcInventoryRepository');
 const printerInvRepo = require('./src/printerInventoryRepository');
+const secretKey = process.env.JWT_SECRET || 'fallback-secret';
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
+
+// Middleware to validate token
+function authenticateToken(req, res, next) {
+    const token = req.headers['authorization'];
+    if (!token) return res.status(401).send('Access denied.');
+
+    jwt.verify(token, 'secretKey', (err, user) => {
+        if (err) return res.status(403).send('Invalid Token');
+        req.user = user;
+        next();
+    });
+}
+
+// Register a New User
+app.post('/auth/register', async (req, res) => {
+    const { username, password } = req.body;
+    if (!username || !password) {
+        return res.status(400).send('Username and password are required.');
+    }
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const query = `
+        INSERT INTO users (username, password_hash)
+        VALUES ($1, $2) RETURNING id
+        `;
+        const values = [username, hashedPassword];
+
+        const result = await db.query(query, values);
+        res.status(201).send({ userId: result.rows[0].id });
+    } catch (err) {
+        if (err.code === '23505') {
+            res.status(400).send('Username already exsists.');
+        } else {
+            console.error('Error registering user:', err);
+            res.status(500).send('Server Error');
+        }
+    }
+});
+
+app.post('/auth/login', async (req, res) => {
+    const { username, password } = req.body;
+    if (!username || !password) {
+        return res.status(400).send('Username and password are required.');
+    }
+    try {
+        const query = `
+        SELECT * FROM users WHERE username = $1
+        `;
+        const values = [username];
+        const result = await db.query(query, values);
+
+        const user = result.rows[0];
+        if (user && await bcrypt.compare(password, user.password_hash)) {
+            const token = jwt.sign(
+                { userId: user.id, username: user.username },
+                secretKey,
+                { expiresIn: '1h' }
+            );
+            res.status(200).send({ token });
+        } else {
+            res.status(401).send('Invalid credentials.');
+        }
+    } catch (err) {
+        console.error('Error logging in:', err);
+        res.status(500).send('Server Error');
+    }
+});
 
 // PC ROUTES
 // Get all PCs

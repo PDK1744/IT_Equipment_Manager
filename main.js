@@ -6,9 +6,12 @@ require('./server');
 let win;
 
 
-function createWindow() {
+function createWindow(file) {
     const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-    const win = new BrowserWindow({
+
+    
+
+    win = new BrowserWindow({
         width: width,
         height: height,
         frame: true,
@@ -20,13 +23,16 @@ function createWindow() {
         }
     });
 
-    win.loadFile('src/UI/index.html');
+    win.loadFile(file);
 
+    
+
+    
     //win.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
-    createWindow();
+    createWindow('src/UI/login.html');
 });
 
 app.on('window-all-closed', () => {
@@ -35,10 +41,22 @@ app.on('window-all-closed', () => {
     }
 });
 
-app.on('activate', () => {
+
+
+/* app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
         createWindow();
     }
+}); */
+
+ipcMain.on('login-success', () => {
+    if (win) {
+        win.close();
+        //win = null;
+    }
+    
+
+    createWindow('src/UI/index.html');
 });
 
 // Handle Confirmation dialog
