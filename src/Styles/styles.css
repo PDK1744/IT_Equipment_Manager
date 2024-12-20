@@ -292,3 +292,10 @@ td.notes {
     color: #333;
 }
 
+.sorted-asc::after {
+    content: ' ▲';
+}
+
+.sorted-desc::after {
+    content: ' ▼';
+}
