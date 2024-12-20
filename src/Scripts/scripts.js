@@ -7,3 +7,7 @@ document.getElementById('addPcBtn').addEventListener('click', () => {
 document.getElementById('addPrinterBtn').addEventListener('click', () => {
     window.electronAPI.openAddPrinter();
 });
+
+document.getElementById('addUserBtn').addEventListener('click', () => {
+    window.electronAPI.openAddUser();
+})

@@ -23,6 +23,7 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
 
         if (response.ok) {
             const data = await response.json();
+            console.log('Token:', data.token);
             localStorage.setItem('token', data.token); // Save JWT token
             //alert('Login successful!');
 

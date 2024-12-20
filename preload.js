@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     // To open "Add PC" or "Add Printer" popup windows
     openAddPc: () => ipcRenderer.send('open-add-pc'),
     openAddPrinter: () => ipcRenderer.send('open-add-printer'),
+    openAddUser: () => ipcRenderer.send('open-add-user'),
 
     // To handle form submissions
     addPc: (pcData) => {
@@ -15,6 +16,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
         console.log('Sending Printer data:', printerData);
         ipcRenderer.send('add-printer', printerData);
     },
+    addUser: (userData, token) => {
+        console.log('Sending User data to main:', userData);
+        ipcRenderer.send('add-user', { userData, token});
+    },
+    onAddUserSuccess: (callback) => ipcRenderer.on('add-user-success', callback),
+    onAddUserFailed: (callback) => ipcRenderer.on('add-user-failed', callback),
 
     loginSuccess: () => ipcRenderer.send('login-success'),
     

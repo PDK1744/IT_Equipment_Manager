@@ -17,32 +17,42 @@ app.use(bodyParser.json());
 
 // Middleware to validate token
 function authenticateToken(req, res, next) {
-    const token = req.headers['authorization'];
-    if (!token) return res.status(401).send('Access denied.');
+    const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return res.status(401).send('Access denied. No Token Provided');
 
-    jwt.verify(token, 'secretKey', (err, user) => {
+    jwt.verify(token, secretKey, (err, user) => {
         if (err) return res.status(403).send('Invalid Token');
+
+        if (user.role !== 'admin') {
+            return res.status(403).send('Access Denied. Insufficient Permissions.');
+        }
+
         req.user = user;
         next();
     });
 }
 
 // Register a New User
-app.post('/auth/register', async (req, res) => {
-    const { username, password } = req.body;
+app.post('/auth/register', authenticateToken, async (req, res) => {
+    const { username, password, role } = req.body;
     if (!username || !password) {
         return res.status(400).send('Username and password are required.');
     }
+
+    if (role && !['user', 'admin'].includes(role)) {
+        return res.status(400).send('Invalid role. Role must be "user" or "admin".');
+    }
+
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const query = `
-        INSERT INTO users (username, password_hash)
-        VALUES ($1, $2) RETURNING id
+        INSERT INTO users (username, password_hash, role)
+        VALUES ($1, $2, $3) RETURNING id, role
         `;
-        const values = [username, hashedPassword];
+        const values = [username, hashedPassword, role || 'user']; // Default to 'user' if nothing is selected.
 
         const result = await db.query(query, values);
-        res.status(201).send({ userId: result.rows[0].id });
+        res.status(201).send({ userId: result.rows[0].id, role: result.rows[0].role });
     } catch (err) {
         if (err.code === '23505') {
             res.status(400).send('Username already exsists.');

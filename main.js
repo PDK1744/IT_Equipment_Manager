@@ -1,5 +1,7 @@
 const { app, BrowserWindow, ipcMain, dialog, ipcRenderer, screen } = require('electron');
 const path = require('path');
+const secretKey = process.env.JWT_SECRET || 'fallback-secret';
+const jwt = require('jsonwebtoken');
 
 require('./server');
 
@@ -100,7 +102,11 @@ ipcMain.on('open-add-pc', () => {
 
 ipcMain.on('open-add-printer', () => {
     createPopupWindow('src/UI/addPrinter.html');
-})
+});
+
+ipcMain.on('open-add-user', () => {
+    createPopupWindow('src/UI/addUser.html');
+});
 
 // Listen for addPc and addPrinter
 ipcMain.on('add-pc', async (event, pcData) => {
@@ -144,6 +150,38 @@ ipcMain.on('add-printer', async (event, printerData) => {
         }
     } catch (error) {
         console.error('Failed to add printer:', error);
+    }
+});
+
+ipcMain.on('add-user', async (event, { userData, token}) => {
+    try {
+        console.log('Received data in main process:', { userData, token });
+        const decoded = jwt.verify(token, secretKey);
+        if (decoded.role !== 'admin') {
+            throw new Error('Only admins can add users');
+        }
+        const response = await fetch('http://localhost:3000/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                
+            },
+            body: JSON.stringify(userData),
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.message || 'Failed to add new user');
+        }
+        event.sender.send('add-user-success', result);
+
+        
+    } catch (error) {
+        console.error('Error adding user:', error);
+
+        event.sender.send('add-user-failed', error.message);
     }
 });
 
