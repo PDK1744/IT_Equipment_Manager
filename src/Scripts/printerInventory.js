@@ -114,7 +114,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return 0;
             }
         });
-        renderPrinters(printers);
+        const filteredPrinters = applyStatusFilter();
+        renderPrinters(filteredPrinters);
     });
 
     // Handle row click event
@@ -160,10 +161,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             return statusFilter === '' || printer.status === statusFilter;
         });
 
-        renderPrinters(filteredPrinters);
+        return filteredPrinters;
     }
 
-    document.getElementById('statusFilter').addEventListener('change', applyStatusFilter);
+    document.getElementById('statusFilter').addEventListener('change', () => {
+        const filteredPrinters = applyStatusFilter();
+        renderPrinters(filteredPrinters);
+    })
 
     document.addEventListener('DOMContentLoaded', () => {
         applyStatusFilter();
@@ -278,11 +282,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // Sort Data
             printers.sort((a, b) => {
-                if (a.printer_name !== b.printer_name) {
-                    return a.printer_name - b.printer_name;
+                const nameA = a.printer_name || '';
+                const nameB = b.printer_name || '';
+                const statusA = a.status || '';
+                const statusB = b.status || '';
+
+                if (nameA !== nameB) {
+                    return nameA.localeCompare(nameB);
                 }
-                return a.status.localeCompare(b.status);
-            })
+                return statusA.localeCompare(statusB);
+            });
+
             renderPrinters(printers);
         } catch (error) {
             console.error('Error refreshing table:', error);

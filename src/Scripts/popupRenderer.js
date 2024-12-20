@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Select the forms
     const pcForm = document.getElementById("pcForm");
     const printerForm = document.getElementById("printerForm");
+    const userForm = document.getElementById("userForm");
 
     // Add event listener for the "Add PC" form
     if (pcForm) {
@@ -21,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 location: document.getElementById("location").value,
                 branch: document.getElementById("branch").value,
                 notes: document.getElementById("notes").value,
+                status: document.getElementById("status").value,
             };
 
             // Send the data to the main process
@@ -56,6 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 portrait: document.getElementById("portrait").value,
                 landscape: document.getElementById("landscape").value,
                 notes: document.getElementById("notes").value,
+                status: document.getElementById("status").value,
             };
 
             // Send the data to the main process
@@ -73,3 +76,33 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+    
+    // Add event listener for the "Add User" form
+    if (userForm) {
+        userForm.addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent default form submission
+            const token = localStorage.getItem('token');
+
+            // Collect data from the User form
+            const userData = {
+                username: document.getElementById("username").value,
+                password: document.getElementById("password").value,
+                role: document.getElementById("role").value,
+            };
+
+            // Send the data to the main process
+            window.electronAPI.addUser({ userData, token });
+
+            // Reset the form and provide feedback
+            userForm.reset();
+            alert("User added successfully!");
+            window.close();
+        });
+
+        // Handle the cancel button for the User form
+        document.getElementById("cancelBtn").addEventListener("click", () => {
+            window.close(); // Close the popup window
+        });
+    }
+

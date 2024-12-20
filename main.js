@@ -83,7 +83,11 @@ ipcMain.on('open-add-pc', () => {
 
 ipcMain.on('open-add-printer', () => {
     createPopupWindow('src/UI/addPrinter.html');
-})
+});
+
+ipcMain.on('open-add-user', () => {
+    createPopupWindow('src/UI/addUser.html');
+});
 
 // Listen for addPc and addPrinter
 ipcMain.on('add-pc', async (event, { pcData, token }) => {
@@ -131,6 +135,29 @@ ipcMain.on('add-printer', async (event, { printerData, token }) => {
         }
     } catch (error) {
         console.error('Failed to add printer:', error);
+    }
+});
+
+ipcMain.on('add-user', async (event, { userData, token }) => {
+    console.log('User Data Received:', userData);
+    try {
+        const response = await fetch('http://localhost:3000/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+             },
+            body: JSON.stringify(userData),
+        });
+        const result = await response.json();
+        if (response.ok) {
+            console.log('User added!', result);
+            event.reply('add-user-success', result);
+        } else {
+            console.error('Error adding user:', result.message);
+            event.reply('add-user-error', result.message);
+        }
+    } catch (error) {
+        console.error('Failed to add user:', error);
     }
 });
 

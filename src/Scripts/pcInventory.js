@@ -122,7 +122,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return 0;
             }
         });
-        renderPCs(pcs);
+        const filteredPCs = applyStatusFilter();
+        renderPCs(filteredPCs);
     });
 
     // Handle row click event
@@ -168,10 +169,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             return statusFilter === '' || pc.status === statusFilter;
         });
 
-        renderPCs(filteredPCs);
+        return filteredPCs;
     }
 
-    document.getElementById('statusFilter').addEventListener('change', applyStatusFilter);
+    document.getElementById('statusFilter').addEventListener('change', () => {
+        const filteredPCs = applyStatusFilter();
+        renderPCs(filteredPCs);
+    });
 
     document.addEventListener('DOMContentLoaded', () => {
         applyStatusFilter();

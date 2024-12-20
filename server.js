@@ -79,7 +79,7 @@ app.post('/auth/login', async (req, res) => {
         }
 
         const token = jwt.sign({ username: user.username, role: user.role }, secretKey, { expiresIn: '1h' });
-        res.json({ token });
+        res.json({ token, role: user.role });
     } catch (err) {
         console.error('Error logging in:', err);
         res.status(500).json({ message: 'Server error.' });

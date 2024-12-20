@@ -15,6 +15,8 @@ document.getElementById('loginForm').addEventListener('submit', async function (
 
         if (response.ok) {
             localStorage.setItem('token', result.token);
+            localStorage.setItem('role', result.role);
+            console.log('Role:', result.role);
             window.location.href = 'index.html'; // Redirect to the main page
         } else {
             alert(result.message || 'Login failed');

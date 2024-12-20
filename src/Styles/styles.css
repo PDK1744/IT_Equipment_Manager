@@ -220,7 +220,7 @@ td.notes {
     cursor: not-allowed; /* Disabled cursor */
 }
 
-#addPcBtn, #addPrinterBtn {
+#addPcBtn, #addPrinterBtn, #addUserBtn {
     display: inline-block;
     padding: 15px 30px;
     margin: 15px;
@@ -234,13 +234,13 @@ td.notes {
     transition: all 0.3s ease;
 }
 
-#addPcBtn:hover, #addPrinterBtn:hover {
+#addPcBtn:hover, #addPrinterBtn:hover, #addUserBtn:hover {
     background-color: #002c5b;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     transform: translateY(-2px);
 }
 
-#addPcBtn:active, #addPrinterBtn:active {
+#addPcBtn:active, #addPrinterBtn:active, #addUserBtn:active {
     background-color: #021d38;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transform: translateY(0);

@@ -50,6 +50,15 @@ input:focus {
     border-color: #4CAF50;
 }
 
+select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
 .button-container {
     display: flex;
     justify-content: space-between;
@@ -62,7 +71,7 @@ button {
     font-size: 16px;
     cursor: pointer;
     transition: all 0.3s ease;
-    background-color: #4CAF50;
+    background-color: #00adff;
     color: #fff;
 }
 
