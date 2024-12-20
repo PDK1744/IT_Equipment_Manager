@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain, dialog, ipcRenderer, screen } = require('electron');
 const path = require('path');
+const fetch = require('node-fetch');
 
 require('./server');
 
@@ -20,7 +21,7 @@ function createWindow() {
         }
     });
 
-    win.loadFile('src/UI/index.html');
+    win.loadFile('src/UI/login.html');
 
     //win.webContents.openDevTools();
 }
@@ -85,13 +86,15 @@ ipcMain.on('open-add-printer', () => {
 })
 
 // Listen for addPc and addPrinter
-ipcMain.on('add-pc', async (event, pcData) => {
+ipcMain.on('add-pc', async (event, { pcData, token }) => {
     console.log('PC Data Received:', pcData);
     // Need to add logic to add data
     try {
         const response = await fetch('http://localhost:3000/pcs', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+             },
             body: JSON.stringify(pcData),
         });
         const result = await response.json();
@@ -107,13 +110,15 @@ ipcMain.on('add-pc', async (event, pcData) => {
     }
 });
 
-ipcMain.on('add-printer', async (event, printerData) => {
+ipcMain.on('add-printer', async (event, { printerData, token }) => {
     console.log('Printer Data Received:', printerData);
     // Need to add logic to add data
     try {
         const response = await fetch('http://localhost:3000/printers', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+             },
             body: JSON.stringify(printerData),
         });
         const result = await response.json();

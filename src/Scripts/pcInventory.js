@@ -201,9 +201,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             try {
                 // Perform PUT request to update the data on the backend
+                const token = localStorage.getItem('token');
                 const response = await fetch(`http://localhost:3000/pcs/${updatedData.id}`, {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                     },
                     body: JSON.stringify(updatedData),
                 });
 
@@ -234,7 +237,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             const confirmed = await window.electronAPI.showConfirmDialog('Are you sure you want to delete this row?');
             if (confirmed) {
                 try {
-                    const response = await fetch(`http://localhost:3000/pcs/${rowId}`, { method: 'DELETE' });
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`http://localhost:3000/pcs/${rowId}`, { method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                     });
                     if (response.ok) {
                         // Remove row from the pcs array
                         pcs = pcs.filter(pc => pc.id !== parseInt(rowId));
@@ -270,7 +278,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Refresh table from the backend
     async function refreshTable() {
         try {
-            const response = await fetch('http://localhost:3000/pcs');
+            const token = localStorage.getItem('token');
+            const response = await fetch('http://localhost:3000/pcs', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             pcs = await response.json();
 
             // Sort data by pc_number and status in ascending order

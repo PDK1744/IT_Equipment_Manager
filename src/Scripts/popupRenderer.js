@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
         pcForm.addEventListener("submit", function (event) {
             event.preventDefault(); // Prevent default form submission
             console.log('Form submitted');
+            const token = localStorage.getItem('token');
 
             // Collect data from the PC form
             const pcData = {
@@ -23,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             // Send the data to the main process
-            window.electronAPI.addPc(pcData);
+            window.electronAPI.addPc({pcData, token});
 
             // Reset the form and provide feedback
             pcForm.reset();
@@ -41,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (printerForm) {
         printerForm.addEventListener("submit", function (event) {
             event.preventDefault(); // Prevent default form submission
+            const token = localStorage.getItem('token');
 
 
             // Collect data from the Printer form
@@ -57,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             // Send the data to the main process
-            window.electronAPI.addPrinter(printerData);
+            window.electronAPI.addPrinter({ printerData, token });
 
             // Reset the form and provide feedback
             printerForm.reset();
