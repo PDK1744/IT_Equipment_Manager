@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 { key: 'features', value: printer.features },
                 { key: 'ip_address', value: printer.ip_address },
                 { key: 'portrait', value: printer.portrait },
-                { key: 'landscape', value: printer.portrait },
+                { key: 'landscape', value: printer.landscape },
                 { key: 'notes', value: printer.notes },
                 { key: 'status', value: printer.status }
             ];
@@ -280,6 +280,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
             printers = await response.json();
 
+            const filteredPrinters = applyStatusFilter();
+            renderPrinters(filteredPrinters);
+
             // Sort Data
             printers.sort((a, b) => {
                 const nameA = a.printer_name || '';
@@ -293,7 +296,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return statusA.localeCompare(statusB);
             });
 
-            renderPrinters(printers);
+            //renderPrinters(printers);
         } catch (error) {
             console.error('Error refreshing table:', error);
         }
@@ -325,5 +328,32 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Hide action buttons until save or cancel
             document.getElementById('actionButtons').style.display = 'block';
         }
+    });
+    // Export to CSV functionality
+    exportBtn.addEventListener('click', () => {
+        const csvContent = "data:text/csv;charset=utf-8," + 
+            ["Printer Name", "Branch", "Location", "Model", "Features", "IP Address", "Portrait", "Landscape", "Notes", "Status"]
+            .join(",") + "\n" +
+            printers.map(printer => [
+                printer.printer_name,
+                printer.branch,
+                printer.location,
+                printer.model,
+                printer.features,
+                printer.ip_address,
+                printer.portrait,
+                printer.landscape,
+                printer.notes,
+                printer.status
+            ].join(",")).join("\n");
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "printer_inventory.csv");
+        document.body.appendChild(link); // Required for FF
+
+        link.click();
+        document.body.removeChild(link);
     });
 });

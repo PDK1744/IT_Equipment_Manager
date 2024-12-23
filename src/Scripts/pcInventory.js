@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const cancelBtn = document.getElementById('cancelBtn');
     const deleteBtn = document.getElementById('deleteBtn');
     const actionButtons = document.getElementById('actionButtons');
+    const exportBtn = document.getElementById('exportBtn');
 
     let pcs = [];
     let selectedRow = null;
@@ -21,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.electronAPI.openAddPc();
     });
     
-    applyStatusFilter()
+    
 
     // Format the date for display
     function formatDate(dateString) {
@@ -290,6 +291,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
             pcs = await response.json();
 
+            const filteredPCs = applyStatusFilter();
+            renderPCs(filteredPCs);
+
             // Sort data by pc_number and status in ascending order
             pcs.sort((a, b) => {
                 if (a.pc_number !== b.pc_number) {
@@ -298,7 +302,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return a.status.localeCompare(b.status);
             });
             
-            renderPCs(pcs);
+            
+            //renderPCs(pcs);
         } catch (error) {
             console.error('Error refreshing table:', error);
         }
@@ -329,5 +334,32 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Hide action buttons until save or cancel
             document.getElementById('actionButtons').style.display = 'block';
         }
+    });
+    // Export to CSV functionality
+    exportBtn.addEventListener('click', () => {
+        const csvContent = "data:text/csv;charset=utf-8," + 
+            ["PC Number", "EASE Number", "Model", "Asset Tag", "Service Tag", "Warranty Expiration", "Location", "Branch", "Notes", "Status"]
+            .join(",") + "\n" +
+            pcs.map(pc => [
+                pc.pc_number,
+                pc.ease_number,
+                pc.model,
+                pc.asset_tag,
+                pc.service_tag,
+                formatDate(pc.warranty_expiration),
+                pc.location,
+                pc.branch,
+                pc.notes,
+                pc.status
+            ].join(",")).join("\n");
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "pc_inventory.csv");
+        document.body.appendChild(link); // Required for FF
+
+        link.click();
+        document.body.removeChild(link);
     });
 });
