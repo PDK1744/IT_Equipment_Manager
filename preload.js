@@ -20,6 +20,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
         console.log('Sending User data:', userData);
         ipcRenderer.send('add-user', userData);
     },
+    refreshPcTable: () => ipcRenderer.send('refresh-pc-table'),
 
     // To show confirmation dialog for delete
     showConfirmDialog: (message) => ipcRenderer.invoke('show-confirm-dialog', message),

@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const deleteBtn = document.getElementById('deleteBtn');
     const actionButtons = document.getElementById('actionButtons');
     const exportBtn = document.getElementById('exportBtn');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const role = localStorage.getItem('role');
 
     let pcs = [];
     let selectedRow = null;
@@ -14,6 +16,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     let editMode = false;
     let currentSortColumn = null;
     let currentSortOrder = 'asc';
+
+    
+    
+    if (role === 'admin') {
+        document.getElementById('addPcBtn').style.display = 'inline-block';
+    }
 
     // Fetch initial data
     await refreshTable();
@@ -142,7 +150,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             return input ? input.value : cell.textContent;
         });
 
-        document.getElementById('actionButtons').style.display = 'block';
+        if (role === 'admin') {
+            document.getElementById('actionButtons').style.display = 'block';
+
+        }
     }
 
     // Exit edit mode
@@ -361,5 +372,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         link.click();
         document.body.removeChild(link);
+    });
+
+    refreshBtn.addEventListener('click', async () => {
+        refreshBtn.classList.add('spinning');
+        await refreshTable();
+        setTimeout(() => {
+            refreshBtn.classList.remove('spinning');
+        }, 1000);
     });
 });

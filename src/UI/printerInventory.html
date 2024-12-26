@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Printer Inventory</title>
     <link rel="stylesheet" href="../Styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     
@@ -20,7 +21,7 @@
     <main>
         <div class="content">
             <h2>Printer Inventory List</h2>
-            <a href="#" id="addPrinterBtn">Add Printer</a>
+            <a href="#" id="addPrinterBtn" style="display: none;">Add Printer</a>
             <a href="#" id="exportBtn">Export to CSV</a>
             <div class="filter-container">
                 <label for="statusFilter">Filter by Status:</label>
@@ -29,6 +30,9 @@
                     <option value="D">Inactive</option>
                     <option value="">All Printers</option>
                 </select>
+                <button id="refreshBtn" class="refresh-btn">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
             </div>
             <input type="text" id="searchInput" placeholder="Search Printers..." />
 

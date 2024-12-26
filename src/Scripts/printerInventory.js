@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const cancelBtn = document.getElementById('cancelBtn');
     const deleteBtn = document.getElementById('deleteBtn');
     const actionButtons = document.getElementById('actionButtons');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const role = localStorage.getItem('role');
 
     let printers = [];
     let selectedRow = null;
@@ -13,6 +15,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     let editMode = false;
     let currentSortColumn = null;
     let currentSortOrder = 'asc';
+
+    if (role === 'admin') {
+        document.getElementById('addPrinterBtn').style.display = 'inline-block';
+    }
 
     // Fetch initial data
     await refreshTable();
@@ -132,8 +138,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             const input = cell.querySelector('input');
             return input ? input.value : cell.textContent;
         });
+        if (role === 'admin') {
+            document.getElementById('actionButtons').style.display = 'block';
 
-        document.getElementById('actionButtons').style.display = 'block';
+        }
+
+        
+
+        
     }
 
     // Exit edit mode
@@ -326,7 +338,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             // Hide action buttons until save or cancel
-            document.getElementById('actionButtons').style.display = 'block';
+            if (role === 'admin') {
+                document.getElementById('actionButtons').style.display = 'block';
+            }
+            
         }
     });
     // Export to CSV functionality
@@ -355,5 +370,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         link.click();
         document.body.removeChild(link);
+    });
+    refreshBtn.addEventListener('click', async () => {
+        refreshBtn.classList.add('spinning');
+        await refreshTable();
+        setTimeout(() => {
+            refreshBtn.classList.remove('spinning');
+        }, 1000);
     });
 });
