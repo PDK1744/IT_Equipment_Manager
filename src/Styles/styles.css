@@ -337,3 +337,37 @@ table td input {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
+
+
+/* Keyframe for sliding in */
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100%); /* Start off-screen */
+        opacity: 0; /* Invisible */
+    }
+    100% {
+        transform: translateX(0); /* End at normal position */
+        opacity: 1; /* Fully visible */
+    }
+}
+
+/* Apply the animation to the ASCII art */
+.ascii-art {
+    font-family: monospace;
+    text-align: center;
+    font-size: 24px;
+    color: black;
+    margin-top: 20px;
+    animation: slideInFromLeft 1s ease-out;  /* 2 seconds fade-in */
+
+    /* Neon Glow Effect */
+    text-shadow: 
+        0 0 5px #0ff,    /* Light cyan glow */
+        0 0 10px #0ff,   /* Stronger cyan glow */
+        0 0 20px #0ff,   /* Even stronger cyan glow */
+        0 0 40px #00f,   /* Blue outer glow */
+        0 0 80px #00f,   /* Blue outer glow */
+        0 0 90px #ff00ff,/* Pink glow */
+        0 0 100px #ff00ff;
+}
+
