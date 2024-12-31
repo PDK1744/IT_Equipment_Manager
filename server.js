@@ -11,6 +11,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 const secretKey = process.env.JWT_SECRET || 'fallback-secret';
 
+
+
 app.use(cors());
 app.use(bodyParser.json());
 

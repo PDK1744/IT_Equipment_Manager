@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const actionButtons = document.getElementById('actionButtons');
     const refreshBtn = document.getElementById('refreshBtn');
     const role = localStorage.getItem('role');
+    const apiUrl = window.electronAPI.getApiUrl();
 
     let printers = [];
     let selectedRow = null;
@@ -38,6 +39,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         );
         renderPrinters(filteredPrinters);
     }
+    function editRow(row) {
+        editMode = true;
+        handleRowClick(row);
+        if (selectedRow) {
+            const cells = row.getElementsByTagName('td');
+            Array.from(cells).forEach((cell, index) => {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = cell.textContent;
+
+                input.style.width = '100%';
+                input.style.boxSizing = 'border-box';
+                input.style.padding = '8px';
+                input.style.border = '1px solid #ccc';
+                input.style.borderRadius = '4px';
+                cell.innerHTML = '';  // Clear the cell
+                cell.appendChild(input);
+            });
+            document.getElementById('actionButtons').style.display = 'block';
+        }
+    }
 
     // Render Printers in the table
     function renderPrinters(printers) {
@@ -67,9 +89,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             // Add click event listener to each row
-            row.addEventListener('click', function () {
-                handleRowClick(row);
+            row.addEventListener('click', function (e) {
+                // Prevent double click from triggering single click
+                if (e.detail === 1) {
+                    setTimeout(() => {
+                        if (e.detail === 1) {
+                            handleRowClick(row);
+                        }
+                }, 200);
+            }
             });
+
+            row.addEventListener('dblclick', function () {
+                //handleRowClick(row);
+                editRow(row);
+            });
+            
 
             printerTableBody.appendChild(row);
         });
@@ -210,7 +245,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             try {
                 // Perform PUT request to update the data on the backend
                 const token = localStorage.getItem('token');
-                const response = await fetch(`http://localhost:3000/printers/${updatedData.id}`, {
+                const response = await fetch(`${apiUrl}/printers/${updatedData.id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
@@ -246,7 +281,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (confirmed) {
                 try {
                     const token = localStorage.getItem('token');
-                    const response = await fetch(`http://localhost:3000/printers/${rowId}`, { method: 'DELETE',
+                    const response = await fetch(`${apiUrl}/printers/${rowId}`, { method: 'DELETE',
                         headers: {'Authorization': `Bearer ${token}` }
                      });
                     if (response.ok) {
@@ -285,7 +320,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function refreshTable() {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:3000/printers', {
+            const response = await fetch(`${apiUrl}/printers`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

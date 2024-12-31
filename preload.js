@@ -1,6 +1,19 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
+
 contextBridge.exposeInMainWorld('electronAPI', {
+    // URL for localhost
+    getApiUrl: () => {
+        // Default to port 3000 if server port not found
+        try {
+            const portArg = process.argv.find(arg => arg.startsWith('--server-port='));
+            const port = portArg ? portArg.split('=')[1] : '3000';
+            return `http://localhost:${port}`;
+        } catch (error) {
+            console.error('Error getting API URL:', error);
+            return 'http://localhost:3000';
+        }
+    },
 
     // To open "Add PC" or "Add Printer" popup windows
     openAddPc: () => ipcRenderer.send('open-add-pc'),

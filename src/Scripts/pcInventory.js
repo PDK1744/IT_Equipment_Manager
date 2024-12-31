@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', async () => {
     const pcTableBody = document.getElementById('pcTableBody');
     const searchInput = document.getElementById('searchInput');
@@ -9,6 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const exportBtn = document.getElementById('exportBtn');
     const refreshBtn = document.getElementById('refreshBtn');
     const role = localStorage.getItem('role');
+    const apiUrl = window.electronAPI.getApiUrl();
 
     let pcs = [];
     let selectedRow = null;
@@ -50,6 +52,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderPCs(filteredPCs);
     }
 
+    function editRow(row) {
+        editMode = true;
+        handleRowClick(row);
+        if (selectedRow) {
+            const cells = row.getElementsByTagName('td');
+            Array.from(cells).forEach((cell, index) => {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = cell.textContent;
+
+                input.style.width = '95%';
+                input.style.boxSizing = 'border-box';
+                input.style.padding = '8px';
+                input.style.border = '1px solid #ccc';
+                input.style.borderRadius = '4px';
+                cell.innerHTML = '';  // Clear the cell
+                cell.appendChild(input);
+            });
+            document.getElementById('actionButtons').style.display = 'block';
+        }
+    }
+
     // Render PCs in the table
     function renderPCs(pcs) {
         pcTableBody.innerHTML = ''; // Clear existing rows
@@ -78,9 +102,24 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             // Add click event listener to each row
-            row.addEventListener('click', function () {
-                handleRowClick(row);
+            row.addEventListener('click', function (e) {
+                // Prevent double click from triggering single click
+                if (e.detail === 1) {
+                    setTimeout(() => {
+                        if (e.detail === 1) {
+                            handleRowClick(row);
+                        }
+                }, 200);
+            }
             });
+
+            row.addEventListener('dblclick', function () {
+                //handleRowClick(row);
+                editRow(row);
+            });
+            //row.addEventListener('click', function () {
+               // handleRowClick(row);
+           // });
 
             pcTableBody.appendChild(row);
         });
@@ -162,7 +201,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             editMode = false;
             const cells = selectedRow.getElementsByTagName('td');
             Array.from(cells).forEach((cell, index) => {
-                cell.textContent = originalData[index];
+                const input = cell.querySelector('input');
+                if (input) {
+                    cell.textContent = originalData[index];
+                }
+                
             });
             selectedRow.classList.remove('highlight');
             selectedRow = null;
@@ -218,7 +261,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             try {
                 // Perform PUT request to update the data on the backend
                 const token = localStorage.getItem('token');
-                const response = await fetch(`http://localhost:3000/pcs/${updatedData.id}`, {
+                const response = await fetch(`${apiUrl}/pcs/${updatedData.id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
@@ -241,8 +284,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Cancel edit mode
     cancelBtn.addEventListener('click', () => {
-        if (editMode) exitEditMode();
-        selectedRow.classList.remove('highlight');
+        exitEditMode();
+        if (selectedRow) {
+            selectedRow.classList.remove('highlight');
+            selectedRow = null;
+        }
         actionButtons.style.display = 'none';
     });
 
@@ -254,7 +300,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (confirmed) {
                 try {
                     const token = localStorage.getItem('token');
-                    const response = await fetch(`http://localhost:3000/pcs/${rowId}`, { method: 'DELETE',
+                    const response = await fetch(`${apiUrl}/pcs/${rowId}`, { method: 'DELETE',
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }
@@ -295,7 +341,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function refreshTable() {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:3000/pcs', {
+            const response = await fetch(`${apiUrl}/pcs`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
