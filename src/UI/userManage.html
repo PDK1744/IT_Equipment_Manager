@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <link rel="stylesheet" type="text/css" href="../Styles/styles.css">
+</head>
+<body>
+    <header>
+        <h1>IT Inventory Manager</h1>
+    </header>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="pcInventory.html">PC Inventory</a>
+        <a href="printerInventory.html">Printer Inventory</a>
+    </nav>
+
+    <main>
+        <div class="content">
+            <h2>User Management</h2>
+            <div id="actionButtons">
+                <button id="editBtn">Edit</button>
+                <button id="saveBtn">Save</button>
+                <button id="cancelBtn">Cancel</button>
+                <button id="deleteBtn">Delete</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Role</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 TEXAR FCU IT Department</p>
+    </footer>
+    <script src="../Scripts/userManage.js"></script>
+</body>
+</html>

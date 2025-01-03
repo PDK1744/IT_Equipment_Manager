@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('addPcBtn').style.display = 'inline-block';
         document.getElementById('addPrinterBtn').style.display = 'inline-block';
         document.getElementById('addUserBtn').style.display = 'inline-block';
+        document.getElementById('manageUsersBtn').style.display = 'inline-block';
     }
     document.getElementById('addPcBtn').addEventListener('click', () => {
         window.electronAPI.openAddPc();
@@ -17,6 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('addUserBtn').addEventListener('click', () => {
         window.electronAPI.openAddUser();
     });
+
+    /*document.getElementById('manageUsersBtn').addEventListener('click', () => {
+        window.electronAPI.openManageUsers();
+    });*/
+    
 
     const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
     let currentIndex = 0;

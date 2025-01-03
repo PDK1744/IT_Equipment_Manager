@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Reset the form and provide feedback
             printerForm.reset();
-            alert("Printer added successfully!");
+            //alert("Printer added successfully!");
             window.close();
         });
 
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Add event listener for the "Add User" form
     if (userForm) {
-        userForm.addEventListener("submit", function (event) {
+        userForm.addEventListener("submit",  async function (event) {
             event.preventDefault(); // Prevent default form submission
             const token = localStorage.getItem('token');
 
@@ -91,13 +91,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 role: document.getElementById("role").value,
             };
 
-            // Send the data to the main process
-            window.electronAPI.addUser({ userData, token });
-
-            // Reset the form and provide feedback
-            userForm.reset();
-            alert("User added successfully!");
-            window.close();
+            try {
+            // Wait for response from main process
+            const result = await window.electronAPI.addUser({ userData, token });
+            
+            if (result.success) {
+                userForm.reset();
+                alert("User added successfully!");
+                window.close();
+            } else {
+                alert(`Failed to add user: ${result.message}`);
+            }
+        } catch (error) {
+            alert(`Error adding user: ${error.message}`);
+        }
         });
 
         // Handle the cancel button for the User form

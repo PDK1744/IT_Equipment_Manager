@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const pcInvRepo = require('./src/pcInventoryRepository');
 const printerInvRepo = require('./src/printerInventoryRepository');
-const userRepo = require('./src/userRepository'); // Create this file for user-related database operations
+const userRepo = require('./src/userRepository'); 
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -175,6 +175,53 @@ app.delete('/printers/:id', async (req, res) => {
     } catch (err) {
         console.error('Error deleting Printer:', err);
         res.status(500).json({ message: 'Server Error' });
+    }
+});
+
+// Get all users (view)
+app.get('/users/view', authenticateToken, async (req, res) => {
+    try {
+        const users = await userRepo.getAllUsers();
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching users' });
+    }
+});
+
+// Update user role endpoint
+app.put('/users/:id/role', authenticateToken, async (req, res) => {
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ message: 'Not authorized' });
+    }
+    try {
+        const userId = req.params.id;
+        const { role } = req.body;
+        
+        // Validate role
+        if (!role || !['admin', 'user'].includes(role)) {
+            return res.status(400).json({ message: 'Invalid role' });
+        }
+
+        await userRepo.updateUserRole(userId, role);
+        res.json({ success: true, message: 'Role updated successfully' });
+    } catch (error) {
+        console.error('Error updating role:', error);
+        res.status(500).json({ message: error.message });
+    }
+})
+
+// Delete user endpoint
+app.delete('/users/:id', authenticateToken, async (req, res) => {
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ message: 'Not authorized' });
+    }
+    try {
+        const userId = req.params.id;
+        await userRepo.deleteUser(userId);
+        res.json({ success: true, message: 'User deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ message: error.message });
     }
 });
 

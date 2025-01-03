@@ -19,6 +19,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     openAddPc: () => ipcRenderer.send('open-add-pc'),
     openAddPrinter: () => ipcRenderer.send('open-add-printer'),
     openAddUser: () => ipcRenderer.send('open-add-user'),
+    openManageUsers: () => ipcRenderer.send('open-manage-users'),
 
     // To handle form submissions
     addPc: (pcData) => {
@@ -31,7 +32,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     },
     addUser: (userData) => {
         console.log('Sending User data:', userData);
-        ipcRenderer.send('add-user', userData);
+        const result = ipcRenderer.invoke('add-user', userData);
+        return result;
     },
     refreshPcTable: () => ipcRenderer.send('refresh-pc-table'),
 

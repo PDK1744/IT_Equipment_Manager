@@ -151,7 +151,7 @@ ipcMain.on('add-printer', async (event, { printerData, token }) => {
     }
 });
 
-ipcMain.on('add-user', async (event, { userData, token }) => {
+ipcMain.handle('add-user', async (event, { userData, token }) => {
     console.log('User Data Received:', userData);
     try {
         const apiUrl = getApiUrl();
@@ -162,17 +162,30 @@ ipcMain.on('add-user', async (event, { userData, token }) => {
              },
             body: JSON.stringify(userData),
         });
-        const result = await response.json();
-        if (response.ok) {
+        const data = await response.json();
+
+        return {
+            success: response.status === 201,
+            message: response.status === 201 ? 'User added successfully!' : (data.message || 'Failed to create user')
+        };
+    } catch (error) {
+        console.error('Failed to add user:', error);
+        return {
+            success: false,
+            message: error.message || 'Failed to create user'
+        };
+    }
+        
+        /*if (response.ok) {
             console.log('User added!', result);
-            event.reply('add-user-success', result);
+            //event.reply('add-user-success', result);
         } else {
             console.error('Error adding user:', result.message);
-            event.reply('add-user-error', result.message);
+            //event.reply('add-user-error', result.message);
         }
     } catch (error) {
         console.error('Failed to add user:', error);
-    }
+    }*/
 });
 
 /*

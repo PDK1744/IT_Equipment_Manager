@@ -236,7 +236,7 @@ table td input {
     cursor: not-allowed; /* Disabled cursor */
 }
 
-#addPcBtn, #addPrinterBtn, #addUserBtn, #exportBtn {
+#addPcBtn, #addPrinterBtn, #addUserBtn, #exportBtn, #manageUsersBtn {
     display: inline-block;
     padding: 15px 30px;
     margin: 15px;
@@ -250,13 +250,13 @@ table td input {
     transition: all 0.3s ease;
 }
 
-#addPcBtn:hover, #addPrinterBtn:hover, #addUserBtn:hover, #exportBtn:hover {
+#addPcBtn:hover, #addPrinterBtn:hover, #addUserBtn:hover, #exportBtn:hover, #manageUsersBtn:hover {
     background-color: #002c5b;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     transform: translateY(-2px);
 }
 
-#addPcBtn:active, #addPrinterBtn:active, #addUserBtn:active, #exportBtn:active {
+#addPcBtn:active, #addPrinterBtn:active, #addUserBtn:active, #exportBtn:active, #manageUsersBtn:active {
     background-color: #021d38;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transform: translateY(0);
@@ -358,7 +358,7 @@ table td input {
     font-size: 24px;
     color: black;
     margin-top: 20px;
-    animation: slideInFromLeft 1s ease-out;  /* 2 seconds fade-in */
+    /*animation: slideInFromLeft 1s ease-out;   2 seconds fade-in */
 
     /* Neon Glow Effect */
     text-shadow: 
