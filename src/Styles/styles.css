@@ -355,7 +355,7 @@ table td input {
 .ascii-art {
     font-family: monospace;
     text-align: center;
-    font-size: 24px;
+    font-size: 20px;
     color: black;
     margin-top: 20px;
     /*animation: slideInFromLeft 1s ease-out;   2 seconds fade-in */
@@ -369,5 +369,26 @@ table td input {
         0 0 80px #00f,   /* Blue outer glow */
         0 0 90px #ff00ff,/* Pink glow */
         0 0 100px #ff00ff;
+}
+
+.credits-box {
+    text-align: center;
+    margin: 20px auto;
+    font-family: monospace;
+    white-space: pre;
+    max-width: 400px;  /* Set specific width */
+    padding: 0 20px;   /* Add horizontal padding */
+
+    /* Neon Glow Effect */
+    text-shadow: 
+        0 0 5px #0ff,    /* Light cyan glow */
+        0 0 10px #0ff,   /* Stronger cyan glow */
+        0 0 20px #0ff,   /* Even stronger cyan glow */
+        0 0 40px #00f    /* Blue outer glow */
+}
+
+.credits-box pre {
+    margin: 0;
+    text-align: center;
 }
 
