@@ -2,9 +2,19 @@ const { app, BrowserWindow, ipcMain, dialog, ipcRenderer, screen } = require('el
 const path = require('path');
 const fetch = require('node-fetch');
 
+
 require('./server');
 
 let win;
+
+
+const getApiUrl = () => {
+    if (!global.serverPort) {
+        console.error('Server port not initialized');
+        return 'http://localhost:3000'; // fallback port
+    }
+    return `http://localhost:${global.serverPort}`;
+};
 
 
 function createWindow() {
@@ -27,6 +37,7 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+    
     createWindow();
 });
 
@@ -94,7 +105,8 @@ ipcMain.on('add-pc', async (event, { pcData, token }) => {
     console.log('PC Data Received:', pcData);
     // Need to add logic to add data
     try {
-        const response = await fetch('http://localhost:3000/pcs', {
+        const apiUrl = getApiUrl();
+        const response = await fetch(`${apiUrl}/pcs`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -118,7 +130,8 @@ ipcMain.on('add-printer', async (event, { printerData, token }) => {
     console.log('Printer Data Received:', printerData);
     // Need to add logic to add data
     try {
-        const response = await fetch('http://localhost:3000/printers', {
+        const apiUrl = getApiUrl();
+        const response = await fetch(`${apiUrl}/printers`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -141,7 +154,8 @@ ipcMain.on('add-printer', async (event, { printerData, token }) => {
 ipcMain.on('add-user', async (event, { userData, token }) => {
     console.log('User Data Received:', userData);
     try {
-        const response = await fetch('http://localhost:3000/auth/register', {
+        const apiUrl = getApiUrl();
+        const response = await fetch(`${apiUrl}/auth/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`

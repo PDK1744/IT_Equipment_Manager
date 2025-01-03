@@ -11,7 +11,11 @@ const app = express();
 const port = process.env.PORT || 3000;
 const secretKey = process.env.JWT_SECRET || 'fallback-secret';
 
-
+const server = app.listen(0, () => {
+    const port = server.address().port;
+    global.serverPort = port;
+    console.log(`Server running on port ${port}`);
+});
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -177,3 +181,5 @@ app.delete('/printers/:id', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
+
+module.exports = server;
