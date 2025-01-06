@@ -83,12 +83,41 @@ app.post('/auth/login', async (req, res) => {
         if (!validPassword) {
             return res.status(400).json({ message: 'Invalid username or password.' });
         }
+        
+        const needsReset = await userRepo.checkNeedsPasswordReset(user.id);
+        
 
-        const token = jwt.sign({ username: user.username, role: user.role }, secretKey, { expiresIn: '1h' });
-        res.json({ token, role: user.role });
+        const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, secretKey, { expiresIn: '1h' });
+        res.json({ token, role: user.role, needsReset});
     } catch (err) {
         console.error('Error logging in:', err);
         res.status(500).json({ message: 'Server error.' });
+    }
+});
+
+// Add password change endpoint
+app.post('/auth/change-password', authenticateToken, async (req, res) => {
+    try {
+        const { newPassword } = req.body;
+        if (!newPassword) {
+            return res.status(400).json({ message: 'New password is required' });
+        }
+
+        const userId = req.user.id;
+        if (!userId) {
+            return res.status(400).json({ message: 'User ID not found in token' });
+        }
+
+        // Remove hashing here since userRepo.updatePassword handles it
+        await userRepo.updatePassword(userId, newPassword);
+
+        res.json({ success: true, message: 'Password updated successfully' });
+    } catch (error) {
+        console.error('Password update error:', error);
+        res.status(500).json({ 
+            message: 'Failed to update password',
+            error: error.message 
+        });
     }
 });
 

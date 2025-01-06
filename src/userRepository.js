@@ -1,16 +1,58 @@
 const client = require('./db');
+const bcrypt = require('bcrypt');
 
 async function addUser(userData) {
     const { username, password, role } = userData;
     try {
-        const result = await client.query(
-            `INSERT INTO users (username, password_hash, role) VALUES ($1, $2, $3) RETURNING *`,
+        // Start transaction
+        await client.query('BEGIN');
+        
+        // Add user
+        const userResult = await client.query(
+            `INSERT INTO users (username, password_hash, role) 
+             VALUES ($1, $2, $3) RETURNING id`,
             [username, password, role]
         );
-        return result.rows[0];
+        
+        // Add password reset record
+        await client.query(
+            `INSERT INTO password_resets (user_id, needs_reset) 
+             VALUES ($1, true)`,
+            [userResult.rows[0].id]
+        );
+
+        await client.query('COMMIT');
+        return userResult.rows[0];
     } catch (err) {
-        console.error('Error adding user:', err);
+        await client.query('ROLLBACK');
         throw err;
+    }
+}
+
+async function checkNeedsPasswordReset(userId) {
+    const result = await client.query(
+        'SELECT needs_reset FROM password_resets WHERE user_id = $1',
+        [userId]
+    );
+    return result.rows[0]?.needs_reset || false;
+}
+
+async function updatePassword(userId, newPassword) {
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await client.query('BEGIN');
+    try {
+        await client.query(
+            'UPDATE users SET password_hash = $1 WHERE id = $2',
+            [hashedPassword, userId]
+        );
+        await client.query(
+            'UPDATE password_resets SET needs_reset = false WHERE user_id = $1',
+            [userId]
+        );
+        await client.query('COMMIT');
+    } catch (error) {
+        await client.query('ROLLBACK');
+        throw error;
     }
 }
 
@@ -53,15 +95,23 @@ async function updateUserRole(userId, role) {
 // Function to delete a user
 async function deleteUser(userId) {
     try {
-        const result = await client.query(
-            'DELETE FROM users WHERE id = $1 RETURNING *',
+        await client.query('BEGIN');
+        
+        // First delete from password_resets
+        await client.query(
+            'DELETE FROM password_resets WHERE user_id = $1',
             [userId]
         );
-        if (result.rowCount === 0) {
-            throw new Error('User not found');
-        }
-        return result.rows[0];
+        
+        // Then delete from users
+        await client.query(
+            'DELETE FROM users WHERE id = $1',
+            [userId]
+        );
+        
+        await client.query('COMMIT');
     } catch (error) {
+        await client.query('ROLLBACK');
         throw new Error(`Failed to delete user: ${error.message}`);
     }
 }
@@ -72,4 +122,7 @@ module.exports = {
     getAllUsers,
     updateUserRole,
     deleteUser,
+    checkNeedsPasswordReset,
+    updatePassword
+
 };

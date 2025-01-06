@@ -17,7 +17,12 @@ document.getElementById('loginForm').addEventListener('submit', async function (
             localStorage.setItem('token', result.token);
             localStorage.setItem('role', result.role);
             console.log('Role:', result.role);
-            window.location.href = 'index.html'; // Redirect to the main page
+            if (result.needsReset === true) {
+                window.location.href = 'changePassword.html';
+            } else {
+                window.location.href = 'index.html';
+            }
+            
         } else {
             alert(result.message || 'Login failed');
         }
