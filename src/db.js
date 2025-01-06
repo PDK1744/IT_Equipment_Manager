@@ -1,7 +1,13 @@
+const { app } = require('electron');
+const path = require('path');
 const { Client } = require('pg');
 const dotenv = require('dotenv');
 
-dotenv.config();
+dotenv.config({
+    path: app.isPackaged 
+      ? path.join(process.resourcesPath, '.env')
+      : path.join(__dirname, '../.env')
+  });
 
 const client = new Client({
     connectionString: process.env.DATABASE_URL,
