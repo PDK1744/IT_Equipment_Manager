@@ -56,6 +56,31 @@ async function updatePassword(userId, newPassword) {
     }
 }
 
+async function resetUserPassword(userId, tempPassword) {
+    try {
+        await client.query('BEGIN');
+        
+        // Hash temporary password
+        const hashedPassword = await bcrypt.hash(tempPassword, 10);
+        
+        // Update password and set needs_reset
+        await client.query(
+            'UPDATE users SET password_hash = $1 WHERE id = $2',
+            [hashedPassword, userId]
+        );
+        
+        await client.query(
+            'UPDATE password_resets SET needs_reset = true WHERE user_id = $1',
+            [userId]
+        );
+        
+        await client.query('COMMIT');
+    } catch (error) {
+        await client.query('ROLLBACK');
+        throw error;
+    }
+}
+
 async function getUserByUsername(username) {
     try {
         const result = await client.query(`SELECT * FROM users WHERE username = $1`, [username]);
@@ -123,6 +148,7 @@ module.exports = {
     updateUserRole,
     deleteUser,
     checkNeedsPasswordReset,
-    updatePassword
+    updatePassword,
+    resetUserPassword
 
 };

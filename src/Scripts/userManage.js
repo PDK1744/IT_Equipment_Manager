@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const userTableBody = document.getElementById('userTableBody');
-    const searchInput = document.getElementById('searchInput');
+    
     const apiUrl = window.electronAPI.getApiUrl();
     
     let users = [];
@@ -61,7 +61,34 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.querySelectorAll('.reset-btn').forEach(button => {
             button.addEventListener('click', async (e) => {
                 const userId = e.target.dataset.userid;
-                window.location.href = `changePassword.html`;
+                const tempPassword = 'Texar123'; // Default temp password
+                
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`${apiUrl}/auth/admin-reset-password`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ 
+                            userId, 
+                            tempPassword 
+                        })
+                    });
+        
+                    if (response.ok) {
+                        await window.electronAPI.showAlert(
+                            `Password has been reset to: ${tempPassword}\nUser will be prompted to change password on next login.`
+                        );
+                    } else {
+                        const data = await response.json();
+                        await window.electronAPI.showAlert(data.message || 'Failed to reset password');
+                    }
+                } catch (error) {
+                    console.error('Error resetting password:', error);
+                    await window.electronAPI.showAlert('Failed to reset password');
+                }
             });
         });
     }

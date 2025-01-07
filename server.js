@@ -121,6 +121,27 @@ app.post('/auth/change-password', authenticateToken, async (req, res) => {
     }
 });
 
+// Add reset password endpoint (for admins)
+app.post('/auth/admin-reset-password', authenticateToken, async (req, res) => {
+    try {
+        // Check if admin
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Not authorized' });
+        }
+
+        const { userId, tempPassword } = req.body;
+        if (!userId || !tempPassword) {
+            return res.status(400).json({ message: 'User ID and temporary password required' });
+        }
+
+        await userRepo.resetUserPassword(userId, tempPassword);
+        res.json({ success: true, message: 'Password reset successfully' });
+    } catch (error) {
+        console.error('Password reset error:', error);
+        res.status(500).json({ message: 'Failed to reset password' });
+    }
+});
+
 // Protect routes
 app.use('/pcs', authenticateToken);
 app.use('/printers', authenticateToken);
