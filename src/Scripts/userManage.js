@@ -52,9 +52,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', async (e) => {
                 const userId = e.target.dataset.userid;
-                if (await confirmDelete()) {
-                    await deleteUser(userId);
+                const confirmed = await window.electronAPI.showConfirmDialog('Are you sure you want to delete this user?');
+                if (confirmed) {
+                    
+                        await deleteUser(userId);
+                    
+
                 }
+                
             });
         });
 
