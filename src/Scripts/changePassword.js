@@ -24,10 +24,10 @@ document.getElementById('changePasswordForm').addEventListener('submit', async f
         const result = await response.json();
 
         if (response.ok) {
-            alert('Password changed successfully');
+            await window.electronAPI.showAlert(result.message || 'Password changed successfully');
             window.location.href = 'index.html';
         } else {
-            alert(result.message || 'Failed to change password');
+            await window.electronAPI.showAlert(result.message || 'Failed to change password');
             window.location.href = 'login.html';
         }
     } catch (error) {

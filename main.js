@@ -65,6 +65,16 @@ ipcMain.handle('show-confirm-dialog', async (event, message) => {
     return result.response === 1;
 });
 
+// Failed login message
+ipcMain.handle('show-alert', async (event, message) => {
+    return dialog.showMessageBox({
+        type: 'info',
+        title: 'IT Equipment Manager',
+        message: message,
+        buttons: ['OK']
+    });
+});
+
 // Function to create popup window
 function createPopupWindow(file) {
     const { width, height } = screen.getPrimaryDisplay().workAreaSize;

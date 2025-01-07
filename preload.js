@@ -39,4 +39,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
     // To show confirmation dialog for delete
     showConfirmDialog: (message) => ipcRenderer.invoke('show-confirm-dialog', message),
+
+    showAlert: (message) => ipcRenderer.invoke('show-alert', message),
 });

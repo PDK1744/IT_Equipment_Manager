@@ -24,7 +24,8 @@ document.getElementById('loginForm').addEventListener('submit', async function (
             }
             
         } else {
-            alert(result.message || 'Login failed');
+            await window.electronAPI.showAlert(result.message || 'Failed to login');
+            window.location.href = 'login.html';
         }
     } catch (error) {
         console.error('Error logging in:', error);

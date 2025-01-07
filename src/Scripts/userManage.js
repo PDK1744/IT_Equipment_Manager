@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </td>
                 <td>
                     <button class="delete-btn" data-userid="${user.id}">Delete</button>
+                    <button class="reset-btn" data-userid="${user.id}">Reset Password</button>
                 </td>
             `;
             userTableBody.appendChild(row);
@@ -54,6 +55,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (await confirmDelete()) {
                     await deleteUser(userId);
                 }
+            });
+        });
+
+        document.querySelectorAll('.reset-btn').forEach(button => {
+            button.addEventListener('click', async (e) => {
+                const userId = e.target.dataset.userid;
+                window.location.href = `changePassword.html`;
             });
         });
     }
