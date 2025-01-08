@@ -17,7 +17,7 @@ module.exports = {
         name: 'IT_Equipment_Manager',
         authors: 'Kobe Bonner',
         description: 'IT Equipment Manager for Texar FCU',
-        setupIcon: './assets/icons/icon.ico',
+        //setupIcon: './assets/icons/icon.ico',
         exe: 'IT_Equipment_Manager.exe'
       },
     },
@@ -29,7 +29,7 @@ module.exports = {
       name: '@electron-forge/maker-deb',
       config: {
         options: {
-          icon: './assets/icons/icon.png',
+          //icon: './assets/icons/icon.png',
         }
       },
     },
@@ -55,4 +55,18 @@ module.exports = {
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
   ],
+  publishers: [
+    {
+      name: '@electron-forge/publisher-github',
+      config: {
+        repository: {
+          owner: 'PDK1744',
+          name: 'IT_Equipment_Manager'
+        },
+        prerelease: false,
+        draft: true
+      }
+    }
+  ]
+
 };
