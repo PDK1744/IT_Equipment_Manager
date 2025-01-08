@@ -3,6 +3,7 @@ const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 
 module.exports = {
   packagerConfig: {
+    icon: './assets/icons/icon',
     asar: true,
     extraResource: [
       '.env'
@@ -16,6 +17,7 @@ module.exports = {
         name: 'IT_Equipment_Manager',
         authors: 'Kobe Bonner',
         description: 'IT Equipment Manager for Texar FCU',
+        setupIcon: './assets/icons/icon.ico',
         exe: 'IT_Equipment_Manager.exe'
       },
     },
@@ -25,7 +27,11 @@ module.exports = {
     },
     {
       name: '@electron-forge/maker-deb',
-      config: {},
+      config: {
+        options: {
+          icon: './assets/icons/icon.png',
+        }
+      },
     },
     {
       name: '@electron-forge/maker-rpm',
