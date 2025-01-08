@@ -14,7 +14,7 @@ module.exports = {
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        name: 'IT_Equipment_Manager',
+        name: 'IT Equipment Manager',
         authors: 'Kobe Bonner',
         description: 'IT Equipment Manager for Texar FCU',
         //setupIcon: './assets/icons/icon.ico',

@@ -7,6 +7,8 @@ require('./server');
 
 let win;
 
+if (require('electron-squirrel-startup')) return app.quit();
+
 
 const getApiUrl = () => {
     if (!global.serverPort) {
