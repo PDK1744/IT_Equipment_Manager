@@ -17,21 +17,23 @@ The Inventory Manager is a desktop application designed to help manage inventory
 
 ## Features
 - Track key information, such as:
-  - **PCs**: PC #, Model, Asset Tag, Service Tag, Warranty Expiration, Location, Branch, and more.
+  - **PCs**: PC #, Model, Asset Tag, Service Tag, Warranty Expiration, Location, Branch, and more
   - **Printers**: Printer Name, IP Address, Location, Branch, etc.
-- User-friendly and secure GUI.
-- Support for multiple users.
-- Ability to view history of previous records. 
+- User-friendly and secure GUI
+- Support for multiple users with role-based access
+- Password reset functionality
+- Secure authentication using JWT
+- Data persistence using PostgreSQL
+
 
 ## Built With
-- WIP
+* [Electron](https://www.electronjs.org/) - Desktop application framework
+* [Node.js](https://nodejs.org/) - JavaScript runtime
+* [PostgreSQL](https://www.postgresql.org/) - Database
+* [bcrypt](https://www.npmjs.com/package/bcrypt) - Password hashing
+* [JSON Web Tokens](https://jwt.io/) - User authentication
 
-## Getting Started
 
-- WIP
-
-### Prerequisites
-- WIP
 
 
 
