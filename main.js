@@ -1,10 +1,13 @@
 const { app, BrowserWindow, ipcMain, dialog, ipcRenderer, screen } = require('electron');
 const path = require('path');
 const fetch = require('node-fetch');
+const { updateElectronApp } = require('update-electron-app');
+
+updateElectronApp();
 
 
 require('./server');
-require('update-electron-app')();
+
 
 let win;
 
