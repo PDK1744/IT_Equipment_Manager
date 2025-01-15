@@ -1,5 +1,6 @@
 const { FusesPlugin } = require('@electron-forge/plugin-fuses');
 const { FuseV1Options, FuseVersion } = require('@electron/fuses');
+require('dotenv').config();
 
 module.exports = {
   packagerConfig: {
@@ -14,7 +15,7 @@ module.exports = {
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        name: 'IT Equipment Manager',
+        name: 'IT_Equipment_Manager',
         authors: 'Kobe Bonner',
         description: 'IT Equipment Manager for Texar FCU',
         //setupIcon: './assets/icons/icon.ico',

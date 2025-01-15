@@ -4,6 +4,7 @@ const fetch = require('node-fetch');
 
 
 require('./server');
+require('update-electron-app')();
 
 let win;
 
