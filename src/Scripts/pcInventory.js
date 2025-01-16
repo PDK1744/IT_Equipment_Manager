@@ -375,18 +375,47 @@ document.addEventListener('DOMContentLoaded', async () => {
             editMode = true;
             const cells = selectedRow.getElementsByTagName('td');
             Array.from(cells).forEach((cell, index) => {
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.value = cell.textContent;
+                //Check if the current cell is the last column. This is to make the status column a dropdown selector
+                if (index === cells.length - 1) {
+                    const select = document.createElement('select');
+                    const options = ['Active', 'Decommed', 'Destroyed', 'New'];
 
-                input.style.width = '100%';
-                input.style.boxSizing = 'border-box';
-                input.style.padding = '8px';
-                input.style.border = '1px solid #ccc';
-                input.style.borderRadius = '4px';
-                cell.innerHTML = '';  // Clear the cell
-                cell.appendChild(input);
+                    options.forEach(optionValue => {
+                        const option = document.createElement('option');
+                        option.value = optionValue;
+                        option.textContent = optionValue;
+                        if (cell.textContent.trim() === optionValue) {
+                            option.selected = true;
+                        }
+                        select.appendChild(option);
+
+                    });
+                    select.style.width = '100%';
+                    select.style.boxSizing = 'border-box';
+                    select.style.padding = '8px';
+                    select.style.border = '1px solid #ccc';
+                    select.style.borderRadius = '4px';
+    
+                    cell.innerHTML = '';  // Clear the cell
+                    cell.appendChild(select);
+                }
+                else {
+                    // For other cells, create a text input
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = cell.textContent;
+    
+                    input.style.width = '100%';
+                    input.style.boxSizing = 'border-box';
+                    input.style.padding = '8px';
+                    input.style.border = '1px solid #ccc';
+                    input.style.borderRadius = '4px';
+    
+                    cell.innerHTML = '';  // Clear the cell
+                    cell.appendChild(input);
+                }
             });
+                
 
             // Hide action buttons until save or cancel
             document.getElementById('actionButtons').style.display = 'block';
