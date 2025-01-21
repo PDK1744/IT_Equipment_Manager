@@ -1,8 +1,12 @@
 {
   "name": "it_equipment_manager",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "IT Equipment Manager for TEXAR FCU",
   "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PDK1744/IT_Equipment_Manager.git"
+  },
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
