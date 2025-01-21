@@ -396,14 +396,24 @@ table td input {
 .status-cards {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 60px;
+    margin-bottom: 20px;
+    gap: 30px;
+    padding: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    
 
 }
 .card {
-    width: 190px;
-    height: 254px;
+    flex: 0 0 180px;
+    width: 180px;
+    height: 180px;
     border-radius: 30px;
     background: #e0e0e0;
     box-shadow: 15px 15px 30px #bebebe,
                -15px -15px 30px #ffffff;
+    margin: 0;
   }
