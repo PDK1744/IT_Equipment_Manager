@@ -392,3 +392,17 @@ table td input {
     text-align: center;
 }
 
+
+.status-cards {
+    display: flex;
+    justify-content: space-between;
+
+}
+.card {
+    width: 190px;
+    height: 254px;
+    border-radius: 30px;
+    background: #e0e0e0;
+    box-shadow: 15px 15px 30px #bebebe,
+               -15px -15px 30px #ffffff;
+  }

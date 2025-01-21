@@ -39,23 +39,49 @@ document.addEventListener('DOMContentLoaded', async () => {
         );
         renderPrinters(filteredPrinters);
     }
+
     function editRow(row) {
         editMode = true;
         handleRowClick(row);
         if (selectedRow) {
             const cells = row.getElementsByTagName('td');
             Array.from(cells).forEach((cell, index) => {
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.value = cell.textContent;
-
-                input.style.width = '100%';
-                input.style.boxSizing = 'border-box';
-                input.style.padding = '8px';
-                input.style.border = '1px solid #ccc';
-                input.style.borderRadius = '4px';
-                cell.innerHTML = '';  // Clear the cell
-                cell.appendChild(input);
+                const columnName = cell.getAttribute('data-column');
+                
+                if (columnName === 'status') {
+                    // Create select element for status
+                    const select = document.createElement('select');
+                    select.style.width = '95%';
+                    select.style.padding = '8px';
+                    select.style.border = '1px solid #ccc';
+                    select.style.borderRadius = '4px';
+                    
+                    // Add status options
+                    const statuses = ['Active', 'Decommed', 'Destroyed', 'New'];
+                    statuses.forEach(status => {
+                        const option = document.createElement('option');
+                        option.value = status;
+                        option.textContent = status;
+                        if (cell.textContent === status) {
+                            option.selected = true;
+                        }
+                        select.appendChild(option);
+                    });
+                    
+                    cell.innerHTML = '';
+                    cell.appendChild(select);
+                } else {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = cell.textContent;
+                    input.style.width = '95%';
+                    input.style.boxSizing = 'border-box';
+                    input.style.padding = '8px';
+                    input.style.border = '1px solid #ccc';
+                    input.style.borderRadius = '4px';
+                    cell.innerHTML = '';
+                    cell.appendChild(input);
+                }
             });
             document.getElementById('actionButtons').style.display = 'block';
         }
@@ -171,16 +197,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         originalData = Array.from(selectedRow.children).map(cell => {
             const input = cell.querySelector('input');
-            return input ? input.value : cell.textContent;
+            const select = cell.querySelector('select');
+            if (input) {
+                return input.value;
+            } else if (select) {
+                return select.value;
+            }
+            return cell.textContent;
         });
+
         if (role === 'admin') {
             document.getElementById('actionButtons').style.display = 'block';
 
         }
-
-        
-
-        
     }
 
     // Exit edit mode
@@ -189,7 +218,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             editMode = false;
             const cells = selectedRow.getElementsByTagName('td');
             Array.from(cells).forEach((cell, index) => {
-                cell.textContent = originalData[index];
+                const input = cell.querySelector('input');
+                const select = cell.querySelector('select');
+                if (input) {
+                    cell.textContent = originalData[index];
+                } else if (select) {
+                    cell.textContent = originalData[index];
+                }
+                
             });
             selectedRow.classList.remove('highlight');
             selectedRow = null;
@@ -231,9 +267,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             const cells = selectedRow.getElementsByTagName('td');
             Array.from(cells).forEach((cell) => {
                 const input = cell.querySelector('input');
+                const select = cell.querySelector('select');
                 if (input) {
                     updatedData[cell.getAttribute('data-column')] = input.value;
                     cell.textContent = input.value; // Update the cell immediately
+                } else if (select) {
+                    updatedData[cell.getAttribute('data-column')] = select.value;
+                    cell.textContent = select.value;
                 }
             });
 
