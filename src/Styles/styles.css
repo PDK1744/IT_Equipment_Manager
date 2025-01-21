@@ -395,7 +395,8 @@ table td input {
 
 .status-cards {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: space-around;
 
 }
 .card {
