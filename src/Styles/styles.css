@@ -372,12 +372,12 @@ table td input {
 }
 
 .credits-box {
+
     text-align: center;
     margin: 20px auto;
     font-family: monospace;
     white-space: pre;
-    max-width: 400px;  /* Set specific width */
-    padding: 0 20px;   /* Add horizontal padding */
+    max-width: 400px;  
 
     /* Neon Glow Effect */
     text-shadow: 
