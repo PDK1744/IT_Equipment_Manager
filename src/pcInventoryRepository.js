@@ -104,9 +104,21 @@ async function deletePC(id) {
     }
 }
 
+// Count All Active PCs
+async function countActivePCs() {
+    try {
+        const activePCs = await client.query('SELECT COUNT(*) FROM pc_inventory WHERE status = $1', ['Active']);
+
+        return activePCs.rows[0].count;
+    } catch (error) {
+        console.error('Error fetching dashboard counts:', error);
+    }
+}
+
 module.exports = {
     getAllPCs,
     addPC,
     updatePC,
     deletePC,
+    countActivePCs,
 };

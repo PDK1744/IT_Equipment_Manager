@@ -104,9 +104,21 @@ async function deletePrinter(id) {
     }
 }
 
+// Count All Active Printers
+async function countActivePrinters() {
+    try {
+        const activePrinters = await client.query('SELECT COUNT(*) FROM printer_inventory WHERE status = $1', ['Active']);
+
+        return activePrinters.rows[0].count;
+    } catch (error) {
+        console.error('Error fetching dashboard counts:', error);
+    }
+}
+
 module.exports = {
     getAllPrinters,
     addPrinter,
     updatePrinter,
     deletePrinter,
+    countActivePrinters,
 };

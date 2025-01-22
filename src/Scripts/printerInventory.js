@@ -87,6 +87,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    //Tool Tip for Notes column
+    function createTooltip() {
+        const tooltip = document.createElement('div');
+        tooltip.className = 'tooltip';
+        document.body.appendChild(tooltip);
+        return tooltip;
+    }
+
     // Render Printers in the table
     function renderPrinters(printers) {
         printerTableBody.innerHTML = ''; // Clear existing rows
@@ -111,6 +119,26 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const cell = document.createElement('td');
                 cell.setAttribute('data-column', col.key);
                 cell.textContent = col.value;
+                // Add tooltip for notes column
+                if (col.key === 'notes' || col.key === 'features') {
+                    const tooltip = createTooltip();
+                    let tooltipTimeout;
+                    cell.addEventListener('mouseover', (e) => {
+                        tooltipTimeout = setTimeout(() => {
+                            tooltip.textContent = col.value;
+                            tooltip.style.display = 'block';
+                            const rect = cell.getBoundingClientRect();
+                            tooltip.style.left = `${rect.left}px`;
+                            tooltip.style.top = `${rect.bottom + 5}px`;
+
+                        }, 500);
+                        
+                    });
+                    cell.addEventListener('mouseout', () => {
+                        clearTimeout(tooltipTimeout);
+                        tooltip.style.display = 'none';
+                    });
+                }
                 row.appendChild(cell);
             });
 

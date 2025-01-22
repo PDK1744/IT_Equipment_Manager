@@ -417,3 +417,39 @@ table td input {
                -15px -15px 30px #ffffff;
     margin: 0;
   }
+.card h3 {
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+    color: #333;
+}
+
+.card .count {
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0;
+    color: #00adff;
+}
+
+.tooltip {
+    position: absolute;
+    background: #333;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    max-width: 300px;
+    z-index: 1000;
+    display: none;
+}
+
+.tooltip::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #333 transparent;
+}

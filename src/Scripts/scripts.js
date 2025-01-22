@@ -1,5 +1,24 @@
+const apiUrl = window.electronAPI.getApiUrl();
+
+async function updateDashboardCounts() {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${apiUrl}/dashboard/counts`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const data = await response.json();
+        document.querySelector('#active-PCs .count').textContent = data.activePCs;
+        document.querySelector('#active-Printers .count').textContent = data.activePrinters;   
+    } catch (error) {
+        console.error('Error fetching dashboard counts:', error);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const role = localStorage.getItem('role');
+    updateDashboardCounts();
     
     if (role === 'admin') {
         document.getElementById('addPcBtn').style.display = 'inline-block';
@@ -88,4 +107,3 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
 });
-

@@ -275,6 +275,18 @@ app.delete('/users/:id', authenticateToken, async (req, res) => {
     }
 });
 
+// Update Dashboard Counts
+app.get('/dashboard/counts', authenticateToken, async (req, res) => {
+    try {
+        const activePCs = await pcInvRepo.countActivePCs();
+        const activePrinters = await printerInvRepo.countActivePrinters();
+        res.json({ activePCs, activePrinters });
+    } catch (error) {
+        console.error('Error fetching dashboard counts:', error);
+        res.status(500).json({ message: 'Error fetching dashboard counts' });
+    }
+})
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
