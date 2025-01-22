@@ -16,6 +16,7 @@ header {
 
 nav {
     display: flex;
+    align-items: center;
     justify-content: center;
     background-color: #333;
 }
@@ -45,7 +46,7 @@ main {
     padding: 10px;
     padding-bottom: 40px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    position: relative; /* For absolute positioning of action buttons */
+    position: relative; 
 }
 
 footer {
@@ -217,7 +218,7 @@ table td input {
     font-size: 14px; /* Readable text size */
     font-weight: bold; /* Bold text for emphasis */
     cursor: pointer; /* Pointer cursor for interactivity */
-    transition: background-color 0.3s, transform 0.2s; /* Smooth hover effects */
+    transition: background-color 0.3s, transform 0.2s; 
 }
 
 #actionButtons button:hover {
@@ -398,7 +399,7 @@ table td input {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    margin-top: 60px;
+    margin-top: 20px;
     margin-bottom: 20px;
     gap: 30px;
     padding: 0px;
@@ -408,9 +409,8 @@ table td input {
 
 }
 .card {
-    flex: 0 0 180px;
-    width: 180px;
-    height: 180px;
+    width: 170px;
+    height: 170px;
     border-radius: 30px;
     background: #e0e0e0;
     box-shadow: 15px 15px 30px #bebebe,
@@ -452,4 +452,22 @@ table td input {
     border-width: 5px;
     border-style: solid;
     border-color: transparent transparent #333 transparent;
+}
+
+.action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.decommed-row {
+    background-color: rgb(233, 231, 132);
+    color: black;
+    
+}
+
+.destroyed-row {
+    background-color: rgba(224, 123, 123, 0.938);
+    color: white;
 }

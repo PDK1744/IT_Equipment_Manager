@@ -114,6 +114,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             const row = document.createElement('tr');
             row.setAttribute('data-id', pc.id);
 
+            if (pc.status === 'Decommed') {
+                row.classList.add('decommed-row');
+            } else if (pc.status === 'Destroyed') {
+                row.classList.add('destroyed-row');
+            }
+
             const columns = [
                 { key: 'pc_number', value: pc.pc_number },
                 { key: 'ease_number', value: pc.ease_number },

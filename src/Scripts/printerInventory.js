@@ -102,6 +102,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             const row = document.createElement('tr');
             row.setAttribute('data-id', printer.id);
 
+            if (printer.status === 'Decommed') {
+                row.classList.add('decommed-row');
+            } else if (printer.status === 'Destroyed') {
+                row.classList.add('destroyed-row');
+            }
+
             const columns = [
                 { key: 'printer_name', value: printer.printer_name },
                 { key: 'branch', value: printer.branch },
