@@ -18,13 +18,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     let currentSortOrder = 'asc';
 
     if (role === 'admin') {
-        document.getElementById('addPrinterBtn').style.display = 'inline-block';
+        document.getElementById('addPrinterBtn-second').style.display = 'inline-block';
     }
 
     // Fetch initial data
     await refreshTable();
 
-    document.getElementById('addPrinterBtn').addEventListener('click', () => {
+    document.getElementById('addPrinterBtn-second').addEventListener('click', () => {
         window.electronAPI.openAddPrinter();
     });
 

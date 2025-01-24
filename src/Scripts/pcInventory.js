@@ -22,13 +22,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     
     if (role === 'admin') {
-        document.getElementById('addPcBtn').style.display = 'inline-block';
+        document.getElementById('addPcBtn-second').style.display = 'inline-block';
     }
 
     // Fetch initial data
     await refreshTable();
 
-    document.getElementById('addPcBtn').addEventListener('click', () => {
+    document.getElementById('addPcBtn-second').addEventListener('click', () => {
         window.electronAPI.openAddPc();
     });
     

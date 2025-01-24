@@ -237,11 +237,24 @@ table td input {
     cursor: not-allowed; /* Disabled cursor */
 }
 
-#addPcBtn, #addPrinterBtn, #addUserBtn, #exportBtn, #manageUsersBtn {
+#addPcBtn, #addPrinterBtn, #addUserBtn, #manageUsersBtn {
     display: inline-block;
-    padding: 15px 30px;
+    padding: 12px 25px;
     margin: 15px;
-    font-size: 16px;
+    font-size: 15px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #00adff;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+#addPcBtn-second, #addPrinterBtn-second, #exportBtn {
+    display: inline-block;
+    padding: 12px 25px;
+    margin: 15px;
+    font-size: 15px;
     text-align: center;
     text-decoration: none;
     background-color: #00adff;
@@ -251,13 +264,13 @@ table td input {
     transition: all 0.3s ease;
 }
 
-#addPcBtn:hover, #addPrinterBtn:hover, #addUserBtn:hover, #exportBtn:hover, #manageUsersBtn:hover {
+#addPcBtn:hover, #addPrinterBtn:hover, #addUserBtn:hover, #exportBtn:hover, #manageUsersBtn:hover, #addPcBtn-second:hover, #addPrinterBtn-second:hover, #exportBtn:hover {
     background-color: #002c5b;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     transform: translateY(-2px);
 }
 
-#addPcBtn:active, #addPrinterBtn:active, #addUserBtn:active, #exportBtn:active, #manageUsersBtn:active {
+#addPcBtn:active, #addPrinterBtn:active, #addUserBtn:active, #exportBtn:active, #manageUsersBtn:active, #addPcBtn-second:active, #addPrinterBtn-second:active, #exportBtn:active {
     background-color: #021d38;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transform: translateY(0);
