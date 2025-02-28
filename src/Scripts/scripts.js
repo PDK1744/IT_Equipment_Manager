@@ -1,4 +1,9 @@
-const apiUrl = window.electronAPI.getApiUrl();
+
+//const apiUrl = window.electronAPI.getApiUrl();
+const apiUrl = window.electronAPI?.getApiUrl() || 'http://localhost:3000';
+
+
+
 
 async function updateDashboardCounts() {
     try {
@@ -16,7 +21,7 @@ async function updateDashboardCounts() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+
     const role = localStorage.getItem('role');
     updateDashboardCounts();
     
@@ -106,4 +111,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
 
-});
+

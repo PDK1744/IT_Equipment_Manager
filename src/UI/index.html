@@ -1,81 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IT Inventory Manager</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../Styles/styles.css">
-</head>
-<body>
-
-    <header>
-        <h1>IT Inventory Manager</h1>
-    </header>
-
-    <nav>
-        <a href="pcInventory.html" id="pcInventoryLink">PC Inventory</a>
-        <a href="printerInventory.html" id="printerInventoryLink">Printer Inventory</a>
-        <a href="https://github.com/PDK1744/IT_Equipment_Manager" target="_blank" id="documentationLink">Documentation</a>
-    </nav>
-
-    <main>
-        <div class="content">
-            <h2>Welcome to the IT Inventory Manager</h2>
-            <p>Manage your department's PCs and Printers efficiently.</p>
-            <p>Select an option from the menu to get started.</p>
-            
-            
-            
-            <div class="dashboard-container">
-                <div class="action-buttons">
-                    <div class="quick-buttons">
-                        <a href="#" id="addPcBtn"><p>Add PC</p></a>
-                    </div>
-                    <div class="quick-buttons">
-                        <a href="#" id="addPrinterBtn"><p>Add Printer</p></a>
-                    </div>
-                    <div class="quick-buttons">
-                        <a href="#" id="addUserBtn"><p>Add User</p></a>
-                    </div>
-                    <div class="quick-buttons">
-                        <a href="userManage.html" id="manageUsersBtn"><p>Manage Users</p></a>
-                    </div>
-
-
-                    
-                    
-                    
-                    
-                </div>
-                <div class="status-cards">
-                    <div class="card" id="active-PCs">
-                        <h3>Active PCs</h3>
-                        <p class="count">Loading...</p>
-                    </div>
-                    <div class="card" id="active-Printers">
-                        <h3>Active Printers</h3>
-                        <p class="count">Loading...</p>
-                    </div>
-                
-                </div>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../Styles/styles.css" />
+    <link rel="stylesheet" href="../Styles/fanta.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </head>
+  <body>
+    <nav class="sidenav">
+        <div class="sidenav-header">
+            <!-- <img src="../public/header-logo-transparent.png" alt="TEXAR Logo" class="nav-logo header-logo"> -->
+        </div>
+        <div class="nav-links">
+            <!-- Main Navigation -->
+            <div class="nav-section">
+                <a href="pcInventory.html" id="pcInventoryLink">
+                    <i class="fa-solid fa-desktop"></i>
+                </a>
+                <a href="printerInventory.html" id="printerInventoryLink">
+                    <i class="fa-solid fa-print"></i>
+                </a>
+                <a href="https://github.com/PDK1744/IT_Equipment_Manager" target="_blank" id="documentationLink">
+                    <i class="fa-solid fa-book"></i>
+                </a>
             </div>
             
-            
-
-
-
-                
-            
+            <!-- Quick Actions -->
+            <div class="nav-section">
+                <a href="#" id="addPcBtn">
+                    <i class="fa-solid fa-desktop"></i>
+                    <i class="fa-solid fa-plus"></i>
+                </a>
+                <a href="#" id="addPrinterBtn">
+                    <i class="fa-solid fa-print"></i>
+                    <i class="fa-solid fa-plus"></i>
+                </a>
+                <a href="#" id="addUserBtn">
+                    <i class="fa-solid fa-user-plus"></i>
+                </a>
+                <a href="userManage.html" id="manageUsersBtn">
+                    <i class="fa-solid fa-users-gear"></i>
+                </a>
+            </div>
         </div>
+    </nav>
+
+    <main class="main-content">
+        <header>
+            <h1 class="text-gradient">TEXAR IT INVENTORY</h1>
+        </header>
+      <div class="content">
+        <div class="welcome-msg card">
+          <h2>Welcome to the IT Inventory Manager</h2>
+          <p>Manage your department's PCs and Printers efficiently.</p>
+          <p>Select an option from the menu to get started.</p>
+        </div>
+        
+
+        <div class="dashboard-container">
+          <div class="status-cards">
+            <div class="card" id="active-PCs">
+              <h3>Active PCs</h3>
+              <p class="count">Loading...</p>
+            </div>
+            <div class="card" id="active-Printers">
+              <h3>Active Printers</h3>
+              <p class="count">Loading...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <p>&copy; 2025 TEXAR FCU IT Department. Developed By: Kobe Bonner v2.0</p>
+      </footer>
     </main>
 
-    <footer>
-        <p>&copy; 2025 TEXAR FCU IT Department. Developed By: Kobe Bonner</p>
-    </footer>
+    
 
     <script src="../Scripts/scripts.js"></script>
-</body>
+  </body>
 </html>

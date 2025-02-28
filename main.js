@@ -1,9 +1,9 @@
-const { app, BrowserWindow, ipcMain, dialog, ipcRenderer, screen } = require('electron');
-const path = require('path');
+const { app, BrowserWindow, ipcMain, dialog, screen } = require('electron');
+const { join } = require('path');
 const fetch = require('node-fetch');
 const { updateElectronApp } = require('update-electron-app');
 
-updateElectronApp();
+//updateElectronApp();
 
 
 require('./server');
@@ -30,7 +30,7 @@ function createWindow() {
         height: height,
         frame: true,
         webPreferences: {
-            preload: __dirname + '/preload.js',
+            preload: join(__dirname, 'preload.js'),
             contextIsolation: true,
             enableRemoteModule: false,
             nodeIntegration: false,
@@ -91,7 +91,7 @@ function createPopupWindow(file) {
         parent: win,
         modal: true,
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js'),
+            preload: join(__dirname, 'preload.js'),
             contextIsolation: true,
             enableRemoteModule: false,
             nodeIntegration: false,
