@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IT Inventory Manager</title>
+    <title>TEXAR IT Inventory</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -12,78 +12,127 @@
     />
     <link rel="stylesheet" href="../Styles/styles.css" />
     <link rel="stylesheet" href="../Styles/fanta.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
   </head>
   <body>
     <nav class="sidenav">
-        <div class="sidenav-header">
-            <!-- <img src="../public/header-logo-transparent.png" alt="TEXAR Logo" class="nav-logo header-logo"> -->
+      <div class="sidenav-header">
+        <!-- <img src="../public/header-logo-transparent.png" alt="TEXAR Logo" class="nav-logo header-logo"> -->
+      </div>
+      <div class="nav-links">
+        <!-- Main Navigation -->
+        <div class="nav-section">
+          <a href="pcInventory.html" id="pcInventoryLink">
+            <i class="fa-solid fa-desktop"></i>
+          </a>
+          <a href="printerInventory.html" id="printerInventoryLink">
+            <i class="fa-solid fa-print"></i>
+          </a>
+          <a
+            href="https://github.com/PDK1744/IT_Equipment_Manager"
+            target="_blank"
+            id="documentationLink"
+          >
+            <i class="fa-solid fa-book"></i>
+          </a>
         </div>
-        <div class="nav-links">
-            <!-- Main Navigation -->
-            <div class="nav-section">
-                <a href="pcInventory.html" id="pcInventoryLink">
-                    <i class="fa-solid fa-desktop"></i>
-                </a>
-                <a href="printerInventory.html" id="printerInventoryLink">
-                    <i class="fa-solid fa-print"></i>
-                </a>
-                <a href="https://github.com/PDK1744/IT_Equipment_Manager" target="_blank" id="documentationLink">
-                    <i class="fa-solid fa-book"></i>
-                </a>
-            </div>
-            
-            <!-- Quick Actions -->
-            <div class="nav-section">
-                <a href="#" id="addPcBtn">
-                    <i class="fa-solid fa-desktop"></i>
-                    <i class="fa-solid fa-plus"></i>
-                </a>
-                <a href="#" id="addPrinterBtn">
-                    <i class="fa-solid fa-print"></i>
-                    <i class="fa-solid fa-plus"></i>
-                </a>
-                <a href="#" id="addUserBtn">
-                    <i class="fa-solid fa-user-plus"></i>
-                </a>
-                <a href="userManage.html" id="manageUsersBtn">
-                    <i class="fa-solid fa-users-gear"></i>
-                </a>
-            </div>
+
+        <!-- Quick Actions -->
+        <div class="nav-section">
+          <a href="#" id="addPcBtn">
+            <i class="fa-solid fa-desktop"></i>
+            <i class="fa-solid fa-plus"></i>
+          </a>
+          <a href="#" id="addPrinterBtn">
+            <i class="fa-solid fa-print"></i>
+            <i class="fa-solid fa-plus"></i>
+          </a>
+          <a href="#" id="addUserBtn">
+            <i class="fa-solid fa-user-plus"></i>
+          </a>
+          <a href="userManage.html" id="manageUsersBtn">
+            <i class="fa-solid fa-users-gear"></i>
+          </a>
         </div>
+      </div>
     </nav>
 
     <main class="main-content">
-        <header>
+      <!-- <header>
             <h1 class="text-gradient">TEXAR IT INVENTORY</h1>
-        </header>
+        </header> -->
       <div class="content">
         <div class="welcome-msg card">
-          <h2>Welcome to the IT Inventory Manager</h2>
-          <p>Manage your department's PCs and Printers efficiently.</p>
-          <p>Select an option from the menu to get started.</p>
+          <h2 class="text-gradient">Welcome to the TEXAR IT Inventory</h2>
+          <p>Manage PC and Printer inventory efficiently</p>
+          <p>Select an option from the sidenav</p>
         </div>
-        
 
         <div class="dashboard-container">
-          <div class="status-cards">
-            <div class="card" id="active-PCs">
-              <h3>Active PCs</h3>
-              <p class="count">Loading...</p>
-            </div>
-            <div class="card" id="active-Printers">
-              <h3>Active Printers</h3>
-              <p class="count">Loading...</p>
-            </div>
+          <div class="card card1" id="active-PCs">
+            <h3>Active PCs</h3>
+            <p class="count">Loading...</p>
+          </div>
+          <div class="card card1" id="active-Printers">
+            <h3>Active Printers</h3>
+            <p class="count">Loading...</p>
+          </div>
+        </div>
+        <div class="recent-changes card">
+          <div class="recent-header"><h3>Recent Changes: 5 Most Recent</h3></div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Device</th>
+                  <th>Type</th>
+                  <th>Action</th>
+                  <th>Updated By</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Placeholder rows -->
+                <tr>
+                  <td>2024-02-28</td>
+                  <td>TEXPC-001</td>
+                  <td>PC</td>
+                  <td><span class="badge added">Added</span></td>
+                  <td>Admin</td>
+                </tr>
+                <tr>
+                  <td>2024-02-28</td>
+                  <td>TEXPRINT-002</td>
+                  <td>Printer</td>
+                  <td><span class="badge updated">Updated</span></td>
+                  <td>Admin</td>
+                </tr>
+                <tr>
+                  <td>2024-02-27</td>
+                  <td>TEXPC-002</td>
+                  <td>PC</td>
+                  <td><span class="badge removed">Removed</span></td>
+                  <td>Admin</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
       <footer>
-        <p>&copy; 2025 TEXAR FCU IT Department. Developed By: Kobe Bonner v2.0</p>
+        <p>
+          &copy;2024-2025 TEXAR FCU IT Department | Developed by Kobe Bonner |
+          v2.0
+        </p>
       </footer>
     </main>
-
-    
 
     <script src="../Scripts/scripts.js"></script>
   </body>

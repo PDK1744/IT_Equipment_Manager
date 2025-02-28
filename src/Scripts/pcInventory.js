@@ -368,14 +368,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     deleteBtn.addEventListener('click', async function () {
         if (selectedRow) {
             const rowId = selectedRow.getAttribute('data-id');
+            const pcNumber = selectedRow.querySelector('td[data-column="pc_number"]').textContent;
+
             const confirmed = await window.electronAPI.showConfirmDialog('Are you sure you want to delete this row?');
             if (confirmed) {
                 try {
                     const token = localStorage.getItem('token');
                     const response = await fetch(`${apiUrl}/pcs/${rowId}`, { method: 'DELETE',
                         headers: {
+                            'Content-Type': 'application/json',
                             'Authorization': `Bearer ${token}`
-                        }
+                        },
+                        body: JSON.stringify({ pc_number: pcNumber })
                      });
                     if (response.ok) {
                         // Remove row from the pcs array
@@ -399,9 +403,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                             searchInput.dispatchEvent(new Event('input'));
                         }, 10);
 
-                    } else {
-                        console.error('Failed to delete row');
-                    }
+                    } //else {
+                        //console.error('Failed to delete row');
+                    //}
                 } catch (error) {
                     console.error('Error deleting row:', error);
                 }

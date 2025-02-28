@@ -10,9 +10,19 @@ async function getAllPCs() {
         throw err;
     }
 }
+async function logChange(deviceId, deviceName, action, updatedBy) {
+    try {
+        await client.query(`
+            INSERT INTO change_log (device_id, device_name, device_type, action, updated_by)
+            VALUES ($1, $2, $3, $4, $5)
+        `, [deviceId, deviceName, 'PC', action, updatedBy]);
+    } catch (error) {
+        console.error('Error logging change:', error);
+    }
+}
 
 // Function to add a new PC
-async function addPC(pcData) {
+async function addPC(pcData, username) {
     const { pc_number, ease_number, model, asset_tag, service_tag, warranty_expiration, location, branch, notes, status } = pcData;
     try {
         const result = await client.query(
@@ -43,6 +53,7 @@ async function addPC(pcData) {
         status
     ]
 );
+        await logChange(result.rows[0].id, pcData.pc_number, 'Added', username);
         return result.rows[0];
     } catch (err) {
         console.error('Error adding PC:', err);
@@ -51,7 +62,7 @@ async function addPC(pcData) {
 }
 
 // Function to update a PC
-async function updatePC(id, pcData) {
+async function updatePC(id, pcData, username) {
     const { pc_number, ease_number, model, asset_tag, service_tag, warranty_expiration, location, branch, notes, status } = pcData;
     try {
         const result = await client.query(
@@ -86,6 +97,7 @@ async function updatePC(id, pcData) {
                 id 
             ]
         );
+        await logChange(result.rows[0].id, pcData.pc_number, 'Updated', username);
         return result.rows[0];
     } catch (err) {
         console.error('Error updating PC:', err);
@@ -94,9 +106,10 @@ async function updatePC(id, pcData) {
 }
 
 // Function to delete a PC
-async function deletePC(id) {
+async function deletePC(id, pcNumber, username) {
     try {
         const result = await client.query('DELETE FROM pc_inventory WHERE id = $1 RETURNING *', [id]);
+        await logChange(result.rows[0].id, pcNumber, 'Removed', username);
         return result.rows[0];
     } catch (err) {
         console.error('Error deleting PC:', err);

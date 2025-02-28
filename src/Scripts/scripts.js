@@ -2,7 +2,36 @@
 //const apiUrl = window.electronAPI.getApiUrl();
 const apiUrl = window.electronAPI?.getApiUrl() || 'http://localhost:3000';
 
-
+async function updateRecentChanges() {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${apiUrl}/recent-changes`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const changes = await response.json();
+        
+        const tbody = document.querySelector('.recent-changes table tbody');
+        tbody.innerHTML = ''; // Clear existing rows
+        
+        changes.forEach(change => {
+            const row = document.createElement('tr');
+            const date = new Date(change.timestamp).toLocaleDateString();
+            
+            row.innerHTML = `
+                <td>${date}</td>
+                <td>${change.device_name}</td>
+                <td>${change.device_type}</td>
+                <td><span class="badge ${change.action.toLowerCase()}">${change.action}</span></td>
+                <td>${change.updated_by}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error fetching recent changes:', error);
+    }
+}
 
 
 async function updateDashboardCounts() {
@@ -21,6 +50,11 @@ async function updateDashboardCounts() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    updateDashboardCounts();
+    updateRecentChanges();
+    
+});
 
     const role = localStorage.getItem('role');
     updateDashboardCounts();
@@ -46,6 +80,12 @@ async function updateDashboardCounts() {
     /*document.getElementById('manageUsersBtn').addEventListener('click', () => {
         window.electronAPI.openManageUsers();
     });*/
+
+
+
+
+
+
     
 
     const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];

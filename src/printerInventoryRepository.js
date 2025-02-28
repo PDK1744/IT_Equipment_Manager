@@ -11,8 +11,19 @@ async function getAllPrinters() {
     }
 }
 
+async function logChange(deviceId, deviceName, action, updatedBy) {
+    try {
+        await client.query(`
+            INSERT INTO change_log (device_id, device_name, device_type, action, updated_by)
+            VALUES ($1, $2, $3, $4, $5)
+        `, [deviceId, deviceName, 'Printer', action, updatedBy]);
+    } catch (error) {
+        console.error('Error logging change:', error);
+    }
+}
+
 // Function to add a new Printer
-async function addPrinter(printerData) {
+async function addPrinter(printerData, username) {
     const { printer_name, branch, location, model, features, ip_address, portrait, landscape, notes, status } = printerData;
     try {
         const result = await client.query(
@@ -43,6 +54,7 @@ async function addPrinter(printerData) {
                 status
             ]
         );
+        await logChange(result.rows[0].id, printerData.printer_number, 'Added', username);
         return result.rows[0];
     } catch (err) {
         console.error('Error adding printer:', err);
@@ -51,7 +63,7 @@ async function addPrinter(printerData) {
 }
 
 // Function to update a printer
-async function updatePrinter(id, printerData) {
+async function updatePrinter(id, printerData, username) {
     const { printer_name, branch, location, model, features, ip_address, portrait, landscape, notes, status } = printerData;
     try {
         const result = await client.query(
@@ -86,6 +98,7 @@ async function updatePrinter(id, printerData) {
                 id
             ]
         );
+        await logChange(result.rows[0].id, printerData.printer_number, 'Updated', username);
         return result.rows[0];
     } catch (err) {
         console.error('Error updating Printer:', err);
@@ -94,9 +107,10 @@ async function updatePrinter(id, printerData) {
 }
 
 // Function to delete a Printer
-async function deletePrinter(id) {
+async function deletePrinter(id, printerNumber, username) {
     try {
         const result = await client.query('DELETE FROM printer_inventory WHERE id = $1 RETURNING *', [id]);
+        await logChange(result.rows[0].id, printerNumber, 'Removed', username);
         return result.rows[0];
     } catch (err) {
         console.error('Error deleting Printer:', err);
