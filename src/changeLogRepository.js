@@ -26,7 +26,21 @@ const changeLogRepo = {
             RETURNING *
         `, values);
         return result.rows[0];
-    }
+    },
+    async getAllChanges() {
+        
+        const result = await client.query(`
+            SELECT 
+                timestamp,
+                device_name,
+                device_type,
+                action,
+                updated_by
+            FROM change_log
+            ORDER BY timestamp DESC
+        `);
+        return result.rows;
+    },
 };
 
 module.exports = changeLogRepo;

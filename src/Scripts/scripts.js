@@ -5,7 +5,7 @@ const apiUrl = window.electronAPI?.getApiUrl() || 'http://localhost:3000';
 async function updateRecentChanges() {
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${apiUrl}/recent-changes`, {
+        const response = await fetch(`${apiUrl}/all-changes`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

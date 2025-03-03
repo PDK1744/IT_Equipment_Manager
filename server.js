@@ -176,6 +176,17 @@ app.get("/recent-changes", authenticateToken, async (req, res) => {
   }
 });
 
+// All Changes
+app.get("/all-changes", authenticateToken, async (req, res) => {
+  try {
+    const changes = await changeLogRepo.getAllChanges();
+    res.json(changes);
+  } catch (error) {
+    console.error("Error fetching recent changes:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
 // PC ROUTES
 app.get("/pcs", async (req, res) => {
   try {

@@ -139,11 +139,37 @@ body {
 }
 
 .table-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow-x: auto;
+  max-height: 400px; /* Set a fixed height for scrolling */
+  overflow-y: auto;
   margin-top: 1rem;
+  border-radius: var(--border-radius-small);
+}
+
+.table-container thead {
+  position: sticky;
+  top: 0;
+  background: var(--background-secondary);
+  z-index: 1;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Add smooth scrollbar for webkit browsers */
+.table-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: var(--background-muted);
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: var(--border-secondary);
+  border-radius: 4px;
 }
 
 .badge {
