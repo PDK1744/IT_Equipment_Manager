@@ -1,82 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Printer Inventory</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../Styles/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-</head>
-<body>
-    
-    <header>
-        <h1>Printer Inventory</h1>
-    </header>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../Styles/styles.css" />
+    <link rel="stylesheet" href="../Styles/fanta.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <button id="menuToggle" class="menu-toggle">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <nav class="sidenav">
+      <div class="sidenav-header">
+        <a href="index.html"
+          ><img
+            src="../public/header-logo-transparent.png"
+            alt="TEXAR Logo"
+            class="nav-logo header-logo"
+        /></a>
+      </div>
+      <div class="nav-links">
+        <!-- Main Navigation -->
+        <div class="nav-section">
+          <a href="pcInventory.html" id="pcInventoryLink">
+            <i class="fa-solid fa-desktop"></i>
+          </a>
+          <a href="printerInventory.html" id="printerInventoryLink">
+            <i class="fa-solid fa-print"></i>
+          </a>
+        </div>
 
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="pcInventory.html">PC Inventory</a>
-        <a href="https://github.com/PDK1744/IT_Equipment_Manager" target="_blank" id="documentationLink">Documentation</a>
+        <!-- Quick Actions -->
+        <div class="nav-section">
+          <a href="#" id="addPcBtn">
+            <i class="fa-solid fa-desktop"></i>
+            <i class="fa-solid fa-plus"></i>
+          </a>
+          <a href="#" id="addPrinterBtn">
+            <i class="fa-solid fa-print"></i>
+            <i class="fa-solid fa-plus"></i>
+          </a>
+          <a href="#" id="addUserBtn">
+            <i class="fa-solid fa-user-plus"></i>
+          </a>
+          <a href="userManage.html" id="manageUsersBtn">
+            <i class="fa-solid fa-users-gear"></i>
+          </a>
+          <a
+            href="https://github.com/PDK1744/IT_Equipment_Manager"
+            target="_blank"
+            id="documentationLink"
+          >
+            <i class="fa-solid fa-book"></i>
+          </a>
+        </div>
+      </div>
     </nav>
 
-    <main>
-        <div class="content">
-            <h2>Printer Inventory List</h2>
-            <a href="#" id="addPrinterBtn-second" style="display: none;">Add Printer</a>
-            <a href="#" id="exportBtn">Export to CSV</a>
-            <div class="filter-container">
-                <label for="statusFilter">Filter by Status:</label>
-                <select id="statusFilter">
-                    <option value="Active">Active</option>
-                    <option value="Decommed">Decommed</option>
-                    <option value="Destroyed">Destroyed</option>
-                    <option value="New">New</option>
-                    <option value="">All Printers</option>
-                </select>
-                <button id="refreshBtn" class="refresh-btn">
-                    <i class="fas fa-sync-alt"></i>
-                </button>
-            </div>
-            <input type="text" id="searchInput" placeholder="Search Printers..." />
+    <main class="main-content">
+      <div class="content">
+        <div class="inv-header">
+          <h1>Printer Inventory</h1>
+          <button id="refreshBtn" class="refresh-btn">
+            <i class="fas fa-sync-alt"></i>
+          </button>
+        </div>
+        <div class="quick-actions">
+          <button><a href="#" id="addPrinterBtn-second">Add Printer</a></button>
+          <button><a href="#" id="exportBtn">Export to CSV</a></button>
+        </div>
+        <div class="search-container">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search Printers..."
+          />
+        </div>
+        <div class="filter-container">
+          <label for="statusFilter">Filter by Status:</label>
+          <select id="statusFilter">
+            <option value="Active" selected>Active</option>
+            <option value="Decommed">Decommed</option>
+            <option value="Destroyed">Destroyed</option>
+            <option value="New">New</option>
+            <option value="">All Printers</option>
+          </select>
+        </div>
 
-            <div id="actionButtons">
-                <button id="editBtn">Edit</button>
-                <button id="saveBtn">Save</button>
-                <button id="cancelBtn">Cancel</button>
-                <button id="deleteBtn">Delete</button>
+        <div class="table-container">
+          <table id="printerTable">
+            <!-- Table headers -->
+            <thead>
+              <tr id="printerTableHeader">
+                <th data-key="printer_name">
+                  Printer Name<span class="sort-arrow"></span>
+                </th>
+                <th data-key="branch">
+                  Branch<span class="sort-arrow"></span>
+                </th>
+                <th data-key="location">
+                  Location<span class="sort-arrow"></span>
+                </th>
+                <th data-key="model">Model<span class="sort-arrow"></span></th>
+                <th data-key="features">
+                  Features<span class="sort-arrow"></span>
+                </th>
+                <th data-key="ip_address">
+                  IP Address<span class="sort-arrow"></span>
+                </th>
+                <th data-key="portrait">
+                  Portrait<span class="sort-arrow"></span>
+                </th>
+                <th data-key="landscape">
+                  Landscape<span class="sort-arrow"></span>
+                </th>
+                <th data-key="notes">Notes <span class="sort-arrow"></span></th>
+                <th data-key="status">Status</th>
+              </tr>
+            </thead>
+            <tbody id="printerTableBody">
+              <!-- Rows inserted here by JavaScript-->
+            </tbody>
+            <tbody></tbody>
+          </table>
+        </div>
+        <!-- Add this after your table -->
+        <div id="contextMenu" class="context-menu">
+          <div class="context-menu-item" data-action="edit">
+            <i class="fas fa-edit"></i> Edit
+          </div>
+          <div class="context-menu-item" data-action="delete">
+            <i class="fas fa-trash-alt"></i> Delete
+          </div>
+        </div>
+      </div>
+      <!-- Add this before the closing </main> tag -->
+      <div id="editModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Edit Printer</h3>
+            <span class="close">X</span>
+          </div>
+          <form id="editPrinterForm">
+            <div class="form-group">
+              <label for="edit_printer_name">Printer Name:</label>
+              <input
+                type="text"
+                id="edit_printer_name"
+                name="printer_name"
+                required
+              />
             </div>
-            <div class="table-container">
-            <table id="printerTable">
-                <!-- Table headers -->
-                <thead>
-                    <tr id="printerTableHeader">
-                        <th data-key="printer_name">Printer Name<span class="sort-arrow"></span></th>
-                        <th data-key="branch">Branch<span class="sort-arrow"></span></th>
-                        <th data-key="location">Location<span class="sort-arrow"></span></th>
-                        <th data-key="model">Model<span class="sort-arrow"></span></th>
-                        <th data-key="features">Features<span class="sort-arrow"></span></th>
-                        <th data-key="ip_address">IP Address<span class="sort-arrow"></span></th>
-                        <th data-key="portrait">Portrait<span class="sort-arrow"></span></th>
-                        <th data-key="landscape">Landscape<span class="sort-arrow"></span></th>
-                        <th data-key="notes">Notes <span class="sort-arrow"></span></th>
-                        <th data-key="status">Status</th>
-                    </tr>
-                </thead>
-                <tbody id="printerTableBody">
-                    <!-- Rows inserted here by JavaScript-->
-                </tbody>
-                <tbody>
-                </tbody>
-            </table>
+            <div class="form-group">
+              <label for="edit_branch">Branch:</label>
+              <input type="text" id="edit_branch" name="branch" required />
+            </div>
+            <div class="form-group">
+              <label for="edit_location">Location:</label>
+              <input type="text" id="edit_location" name="location" required />
+            </div>
+            <div class="form-group">
+              <label for="edit_model">Model:</label>
+              <input type="text" id="edit_model" name="model" required />
+            </div>
+            <div class="form-group">
+              <label for="edit_features">Features:</label>
+              <textarea id="edit_features" name="features"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="edit_ip_address">IP Address:</label>
+              <input
+                type="text"
+                id="edit_ip_address"
+                name="ip_address"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="edit_portrait">Portrait:</label>
+              <input type="text" id="edit_portrait" name="portrait" required />
+            </div>
+            <div class="form-group">
+              <label for="edit_landscape">Landscape:</label>
+              <input
+                type="text"
+                id="edit_landscape"
+                name="landscape"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="edit_notes">Notes:</label>
+              <textarea id="edit_notes" name="notes"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="edit_status">Status:</label>
+              <select id="edit_status" name="status">
+                <option value="Active">Active</option>
+                <option value="Decommed">Decommed</option>
+                <option value="Destroyed">Destroyed</option>
+                <option value="New">New</option>
+              </select>
+            </div>
+            <div class="button-container">
+              <button type="submit">Save Changes</button>
+              <button type="button" id="modalCancelBtn">Cancel</button>
+            </div>
+          </form>
         </div>
-        </div>
+      </div>
     </main>
 
-    
-
     <script src="../Scripts/printerInventory.js"></script>
-</body>
+    <script src="../Scripts/utils.js"></script>
+  </body>
 </html>
