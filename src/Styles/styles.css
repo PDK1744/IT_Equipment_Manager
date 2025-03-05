@@ -460,6 +460,10 @@ select {
   text-decoration: none;
 }
 
+#addPcBtn-second, #exportBtn, #addPrinterBtn-second {
+  color: white !important;
+}
+
 .inv-header {
   display: flex;
   gap: 0.5rem;
@@ -530,7 +534,7 @@ button {
     var(--gradient-start),
     var(--gradient-end)
   );
-  color: white;
+  color: white !important;
   padding: 8px 16px;
   font-size: 0.875rem;
 }
