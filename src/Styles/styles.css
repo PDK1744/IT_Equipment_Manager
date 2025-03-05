@@ -403,6 +403,16 @@ footer p {
   margin-bottom: 1rem;
 }
 
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23555' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  padding-right: 2rem; /* Make room for the arrow */
+}
+
 .filter-container select {
   width: 150px;
   appearance: none; /* Removes default arrow */
@@ -484,15 +494,45 @@ footer p {
   border-left: 3px solid rgb(239, 68, 68);
 }
 
-@media (prefers-color-scheme: dark) {
+.theme-toggle {
+  padding: 0.5rem;
+
+  background: var(--background-primary);
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--background-muted);
+}
+
+.theme-toggle i {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+/* Dark mode icon */
+[data-theme="dark"] .theme-toggle i {
+  transform: rotate(180deg);
+}
+
+[data-theme="dark"] {
   .header-logo {
     filter: brightness(0) invert(1); /* Makes the logo white in dark mode */
     filter: brightness(0) invert(1) drop-shadow(0 0 6px rgba(0, 133, 202, 0.8));
   }
-  .welcome-msg h2 {
-    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.8); /* Darker outline for dark mode */
-    text-stroke: 1px rgba(0, 0, 0, 0.8);
-  }
+}
+
+button {
+  background: linear-gradient(
+    to right,
+    var(--gradient-start),
+    var(--gradient-end)
+  );
+  color: white;
+  padding: 8px 16px;
+  font-size: 0.875rem;
 }
 
 @media screen and (max-width: 1024px) {
