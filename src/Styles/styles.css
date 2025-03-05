@@ -32,7 +32,7 @@
   --color-highlight: #fef9c3;
 
   --gradient-start: #0085ca;
-  --gradient-end: #80ffea;
+  --gradient-end: #59bbfd;
 
   --border-primary: #f1f5f9;
   --border-secondary: #bed1e7;
@@ -534,7 +534,7 @@ button {
     var(--gradient-start),
     var(--gradient-end)
   );
-  color: white !important;
+  color: white ;
   padding: 8px 16px;
   font-size: 0.875rem;
 }
