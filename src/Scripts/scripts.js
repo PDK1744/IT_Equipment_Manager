@@ -1,6 +1,7 @@
 
 //const apiUrl = window.electronAPI.getApiUrl();
 const apiUrl = window.electronAPI?.getApiUrl() || 'http://localhost:3000';
+const searchInput = document.getElementById("searchInput");
 
 async function updateRecentChanges() {
     try {
@@ -50,6 +51,20 @@ async function updateDashboardCounts() {
     }
 }
 
+function filterRecentChanges(searchTerm) {
+    const tbody = document.querySelector('.recent-changes table tbody');
+    const rows = tbody.querySelectorAll('tr');
+
+    rows.forEach(row => {
+        const rowText = row.textContent.toLowerCase();
+        if (rowText.includes(searchTerm.toLowerCase())) {
+            row.style.display = ''; // Show the row
+        } else {
+            row.style.display = 'none'; // Hide the row
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     updateDashboardCounts();
     updateRecentChanges();
@@ -75,6 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     document.getElementById('addUserBtn').addEventListener('click', () => {
         window.electronAPI.openAddUser();
+    });
+
+    searchInput.addEventListener('input', function() {
+        filterRecentChanges(this.value);
     });
 
     /*document.getElementById('manageUsersBtn').addEventListener('click', () => {

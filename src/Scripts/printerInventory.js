@@ -9,6 +9,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const refreshBtn = document.getElementById("refreshBtn");
   const role = localStorage.getItem("role");
   const contextMenu = document.getElementById("contextMenu");
+  const exportOptionsContainer = document.getElementById(
+    "exportOptionsContainer"
+  );
+  const exportModal = document.getElementById("exportModal");
+  const exportModalBtn = document.getElementById("exportModalBtn");
+  const exportBtn = document.getElementById("exportBtn");
   const apiUrl = window.electronAPI?.getApiUrl() || "http://localhost:3000";
 
   let printers = [];
@@ -25,6 +31,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Fetch initial data
   await refreshTable();
+
+  
+
+  exportBtn.addEventListener("click", () => {
+    exportModal.style.display = "block";
+  });
 
   document
     .getElementById("addPrinterBtn-second")
@@ -549,7 +561,68 @@ document.addEventListener("DOMContentLoaded", async () => {
   //   }
   // });
   // Export to CSV functionality
-  exportBtn.addEventListener("click", () => {
+  exportModalBtn.addEventListener("click", () => {
+    const exportSelect = document.getElementById("export-select");
+    const selectedOption = exportSelect.value;
+
+    let filteredPrinters = [...printers];
+    let fileName = "Printer_inventory.csv";
+
+    switch (selectedOption) {
+      case "decommed":
+        filteredPrinters = printers.filter(
+          (printer) => printer.status === "Decommed"
+        );
+        fileName = "All_Decommed_Printer_Inv.csv";
+        break;
+      case "destroyed":
+        filteredPrinters = printers.filter(
+          (printer) => printer.status === "Destroyed"
+        );
+        fileName = "All_Destroyed_Printer_Inv.csv";
+        break;
+      case "new":
+        filteredPrinters = printers.filter(
+          (printer) => printer.status === "New"
+        );
+        fileName = "All_New_Printer_Inv.csv";
+        break;
+      case "exclude_decommed":
+        filteredPrinters = printers.filter(
+          (printer) => printer.status !== "Decommed"
+        );
+        fileName = "Exclude_Decommed_Printer_Inv.csv";
+        break;
+      case "exclude_destroyed":
+        filteredPrinters = printers.filter(
+          (printer) => printer.status !== "Destroyed"
+        );
+        fileName = "Exclude_Destroyed_Printer_Inv.csv";
+        break;
+      case "exclude_new":
+        filteredPrinters = printers.filter(
+          (printer) => printer.status !== "New"
+        );
+        fileName = "Exclude_New_Printer_Inv.csv";
+        break;
+      case "exclude_decommed_destroyed_new":
+        filteredPrinters = printers.filter(
+          (printer) =>
+            printer.status !== "Decommed" &&
+            printer.status !== "Destroyed" &&
+            printer.status !== "New"
+        );
+        fileName = "Only_Active_Printer_Inv.csv";
+        break;
+      case "all":
+      default:
+        fileName = "All_Printer_Inventory.csv";
+        break;
+    }
+
+    const now = new Date();
+    const dateString = now.toISOString().slice(0, 10); // YYYY-MM-DD
+    fileName += `_${dateString}.csv`;
     const csvContent =
       "data:text/csv;charset=utf-8," +
       [
@@ -565,7 +638,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "Status",
       ].join(",") +
       "\n" +
-      printers
+      filteredPrinters
         .map((printer) =>
           [
             printer.printer_name,
@@ -585,11 +658,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "printer_inventory.csv");
-    document.body.appendChild(link); // Required for FF
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
 
     link.click();
     document.body.removeChild(link);
+
+    exportModal.style.display = "none";
+  });
+
+  window.addEventListener("click", (event) => {
+    if (event.target == exportModal) {
+      exportModal.style.display = "none";
+    }
   });
   refreshBtn.addEventListener("click", async () => {
     refreshBtn.classList.add("spinning");
@@ -601,15 +682,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.addEventListener("click", function (e) {
     const contextMenu = document.getElementById("contextMenu");
-    if (!contextMenu.contains(e.target) && !e.target.closest('.context-menu-item')) {
-        contextMenu.style.display = "none";
+    if (
+      !contextMenu.contains(e.target) &&
+      !e.target.closest(".context-menu-item")
+    ) {
+      contextMenu.style.display = "none";
     }
   });
   document.addEventListener("scroll", closeContextMenu);
-document.querySelector('.table-container').addEventListener("scroll", closeContextMenu);
+  document
+    .querySelector(".table-container")
+    .addEventListener("scroll", closeContextMenu);
 
-function closeContextMenu() {
-  const contextMenu = document.getElementById("contextMenu");
-  contextMenu.style.display = "none";
-}
+  function closeContextMenu() {
+    const contextMenu = document.getElementById("contextMenu");
+    contextMenu.style.display = "none";
+  }
 });
