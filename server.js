@@ -282,7 +282,7 @@ app.put("/printers/:id", async (req, res) => {
 
 app.delete("/printers/:id", async (req, res) => {
   try {
-    const printerNumber = req.body.printer_number; // Get pc_number from request body
+    const printerNumber = req.body.printer_name;
     if (!printerNumber) {
       return res.status(400).json({ message: "Printer number is required" });
     }
