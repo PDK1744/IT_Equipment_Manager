@@ -1,6 +1,7 @@
 {
   "name": "it_equipment_manager",
-  "version": "1.0.1",
+  "productName": "TEXAR IT Equipment Manager",
+  "version": "1.0.0",
   "description": "IT Equipment Manager for TEXAR FCU",
   "main": "main.js",
   "repository": {

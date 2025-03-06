@@ -4,7 +4,8 @@ require('dotenv').config();
 
 module.exports = {
   packagerConfig: {
-    icon: './assets/icons/icon',
+    name: 'IT Equipment Manager',
+    icon: './src/assets/logo.ico',
     asar: true,
     extraResource: [
       '.env'
@@ -15,10 +16,10 @@ module.exports = {
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        name: 'IT_Equipment_Manager',
+        name: 'Texar_IT_Equipment_Manager',
+        iconUrl: './assets/icons/icon.ico',
         authors: 'Kobe Bonner',
         description: 'IT Equipment Manager for Texar FCU',
-        //setupIcon: './assets/icons/icon.ico',
         exe: 'IT_Equipment_Manager.exe'
       },
     },
