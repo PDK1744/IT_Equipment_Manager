@@ -168,7 +168,7 @@ ipcMain.on('add-printer', async (event, { printerData, token }) => {
 });
 
 ipcMain.handle('add-user', async (event, { userData, token }) => {
-    console.log('User Data Received:', userData);
+    
     try {
         const apiUrl = getApiUrl();
         const response = await fetch(`${apiUrl}/auth/register`, {
