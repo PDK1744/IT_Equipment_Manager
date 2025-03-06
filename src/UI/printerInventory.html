@@ -225,6 +225,25 @@
         </div>
       </div>
     </main>
+    <div id="exportModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <h2>Export Options</h2>
+        <label for="export-select">Select Export Option:</label>
+        <select id="export-select">
+          <option value="all">All Items</option>
+          <option value="decommed">All Decommed</option>
+          <option value="destroyed">All Destroyed</option>
+          <option value="new">All New</option>
+          <option value="exclude_decommed">Exclude Decommed</option>
+          <option value="exclude_destroyed">Exclude Destroyed</option>
+          <option value="exclude_new">Exclude New</option>
+          <option value="exclude_decommed_destroyed_new">
+            Only Active Printers
+          </option>
+        </select>
+        <button id="exportModalBtn">Export</button>
+      </div>
+    </div>
 
     <script src="../Scripts/printerInventory.js"></script>
     <script src="../Scripts/utils.js"></script>

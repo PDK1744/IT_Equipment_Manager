@@ -10,6 +10,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const refreshBtn = document.getElementById("refreshBtn");
   const role = localStorage.getItem("role");
   const contextMenu = document.getElementById("contextMenu");
+  const exportOptionsContainer = document.getElementById(
+    "exportOptionsContainer"
+  );
+  const exportModal = document.getElementById("exportModal");
+  const exportModalBtn = document.getElementById("exportModalBtn");
+
   const apiUrl = window.electronAPI?.getApiUrl() || "http://localhost:3000";
 
   let pcs = [];
@@ -31,6 +37,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   document
     .querySelector(".table-container")
     .addEventListener("scroll", handleScroll);
+
+  exportBtn.addEventListener("click", () => {
+    exportModal.style.display = "block";
+  });
 
   function handleClickOutside(e) {
     const contextMenu = document.getElementById("contextMenu");
@@ -679,7 +689,57 @@ document.addEventListener("DOMContentLoaded", async () => {
   //   }
   // });
   // Export to CSV functionality
-  exportBtn.addEventListener("click", () => {
+  exportModalBtn.addEventListener("click", () => {
+    const exportSelect = document.getElementById("export-select");
+    const selectedOption = exportSelect.value;
+
+    let filteredPCs = [...pcs];
+    let fileName = "PC_inventory.csv";
+
+    switch (selectedOption) {
+      case "decommed":
+        filteredPCs = pcs.filter((pc) => pc.status === "Decommed");
+        fileName = "All_Decommed_PC_Inv.csv";
+        break;
+      case "destroyed":
+        filteredPCs = pcs.filter((pc) => pc.status === "Destroyed");
+        fileName = "All_Destroyed_PC_Inv.csv";
+        break;
+      case "new":
+        filteredPCs = pcs.filter((pc) => pc.status === "New");
+        fileName = "All_New_PC_Inv.csv";
+        break;
+      case "exclude_decommed":
+        filteredPCs = pcs.filter((pc) => pc.status !== "Decommed");
+        fileName = "Exclude_Decommed_PC_Inv.csv";
+        break;
+      case "exclude_destroyed":
+        filteredPCs = pcs.filter((pc) => pc.status !== "Destroyed");
+        fileName = "Exclude_Destroyed_PC_Inv.csv";
+        break;
+      case "exclude_new":
+        filteredPCs = pcs.filter((pc) => pc.status !== "New");
+        fileName = "Exclude_New_PC_Inv.csv";
+        break;
+      case "exclude_decommed_destroyed_new":
+        filteredPCs = pcs.filter(
+          (pc) =>
+            pc.status !== "Decommed" &&
+            pc.status !== "Destroyed" &&
+            pc.status !== "New"
+        );
+        fileName = "Only_Active_PC_Inv.csv";
+        break;
+      case "all":
+      default:
+        fileName = "All_PC_Inventory.csv";
+        break;
+    }
+
+    const now = new Date();
+    const dateString = now.toISOString().slice(0, 10); // YYYY-MM-DD
+    fileName += `_${dateString}.csv`;
+
     const csvContent =
       "data:text/csv;charset=utf-8," +
       [
@@ -695,7 +755,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "Status",
       ].join(",") +
       "\n" +
-      pcs
+      filteredPCs
         .map((pc) =>
           [
             pc.pc_number,
@@ -715,11 +775,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "pc_inventory.csv");
-    document.body.appendChild(link); // Required for FF
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
 
     link.click();
     document.body.removeChild(link);
+
+    exportModal.style.display = "none"; // Hide the modal after export
+  });
+
+  // Close the modal if the user clicks outside of it
+  window.addEventListener("click", (event) => {
+    if (event.target == exportModal) {
+      exportModal.style.display = "none";
+    }
   });
 
   refreshBtn.addEventListener("click", async () => {
