@@ -549,6 +549,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Refresh table from the backend
   async function refreshTable() {
     try {
+      if (searchInput) {
+        searchInput.value = "";
+      }
       const token = localStorage.getItem("token");
       const response = await fetch(`${apiUrl}/pcs`, {
         headers: {
