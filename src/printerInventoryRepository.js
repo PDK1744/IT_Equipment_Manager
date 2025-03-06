@@ -54,7 +54,7 @@ async function addPrinter(printerData, username) {
                 status
             ]
         );
-        await logChange(result.rows[0].id, printerData.printer_number, 'Added', username);
+        await logChange(result.rows[0].id, printerData.printer_name, 'Added', username);
         return result.rows[0];
     } catch (err) {
         console.error('Error adding printer:', err);
@@ -98,7 +98,7 @@ async function updatePrinter(id, printerData, username) {
                 id
             ]
         );
-        await logChange(result.rows[0].id, printerData.printer_number, 'Updated', username);
+        await logChange(result.rows[0].id, printerData.printer_name, 'Updated', username);
         return result.rows[0];
     } catch (err) {
         console.error('Error updating Printer:', err);
