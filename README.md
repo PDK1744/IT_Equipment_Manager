@@ -1,4 +1,9 @@
 # TEXAR FCU IT Inventory Manager
+## NEW VERSION COMING SOON
+- Rebuilt Database.(With improved queries, stored procedures, functions, etc.)
+- Dedicated API-Will allow users access via web or terminal version
+- NEW terminal based application
+- NEW desktop app built from the ground up in JAVA
 
 ## Table of Contents
 - [About the Project](#about-the-project)
